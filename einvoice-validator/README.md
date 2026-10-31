@@ -1,5 +1,7 @@
 # E-Invoice Validator: XRechnung, ZUGFeRD, Factur-X, Peppol
 
+> **Open source (Apache-2.0):** [read the code on GitHub](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/einvoice-validator): see exactly what this Actor does with your data, run the tests, or host it yourself.
+
 **Is this e-invoice valid, and will the receiver accept it?** This Actor checks e-invoices against the **official
 validation rules**: the European standard **EN 16931** (CEN/TC 434 rules, as published by the European Commission),
 **Peppol BIS Billing 3.0** and **XRechnung 3.0**, plus the UBL 2.1 and UN/CEFACT CII XML schemas. It returns one
@@ -103,9 +105,6 @@ XMP `ConformanceLevel`, attachments). A mismatch between the PDF metadata and th
 
 Files are processed in memory for your run only; nothing is stored beyond your run's dataset.
 
-## Open source
-
-The full source of this Actor is public under Apache-2.0: [github.com/LeriderTechnologies/eu-compliance-actors](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/einvoice-validator). Read exactly what it does with your data, run the tests, or host it yourself.
 
 ## Related
 

@@ -1,5 +1,7 @@
 # eIDAS Signature Validator: Check Signed PDFs & XML (QES, EU)
 
+> **Open source (Apache-2.0):** [read the code on GitHub](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/eidas-check): see exactly what this Actor does with your data, run the tests, or host it yourself.
+
 **Is this signed document genuine, and can I rely on it?** This Actor validates the digital signatures and electronic
 seals in **PDFs**, in **signed XML** (XAdES / XML-DSig) and in **separate signature files** (detached XAdES) against
 the **official EU trusted lists** (eIDAS), the way an EU validation service does, and returns one verdict per
@@ -149,9 +151,6 @@ European Commission's DSS test suite, signature-wrapping and entity-expansion at
 seals. Revocation and issuer lookups only go to public internet addresses. Documents are processed in memory for your run only; nothing is stored
 beyond your run's dataset.
 
-## Open source
-
-The full source of this Actor is public under Apache-2.0: [github.com/LeriderTechnologies/eu-compliance-actors](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/eidas-check). Read exactly what it does with your data, run the tests, or host it yourself.
 
 ## Related
 

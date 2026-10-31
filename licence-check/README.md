@@ -1,5 +1,7 @@
 # EU Financial Licence & Warning List Check
 
+> **Open source (Apache-2.0):** [read the code on GitHub](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/licence-check): see exactly what this Actor does with your data, run the tests, or host it yourself.
+
 Before you pay, deposit with, invest through or onboard a financial firm or crypto platform, ask one question:
 **is it authorised in the EU, and is it on a regulator's warning list?**
 
@@ -217,7 +219,3 @@ where a source was down still returns a verdict (never ALLOW in that case) and i
 - GLEIF LEI records (LEI look-up and the bundled LEI status data): CC0.
 
 Every result carries the attribution lines for the sources it used.
-
-## Open source
-
-The full source of this Actor is public under Apache-2.0: [github.com/LeriderTechnologies/eu-compliance-actors](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/licence-check). Read exactly what it does with your data, run the tests, or host it yourself.

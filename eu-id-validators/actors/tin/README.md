@@ -1,5 +1,7 @@
 # EU TIN Validator: Tax ID Number Check for 27 EU Countries
 
+> **Open source (Apache-2.0):** [read the code on GitHub](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/eu-id-validators): see exactly what this Actor does with your data, run the tests, or host it yourself.
+
 Check Tax Identification Numbers (TINs) for every EU member state with the European Commission's official **TIN
 service**: is the structure right for that country, and is the check digit right? Built for DAC7 seller onboarding on
 platforms and marketplaces, KYC/KYB forms, payroll and invoice checks, and AI agents that collect tax IDs.
@@ -64,9 +66,6 @@ Some countries have no check digit; `valid_syntax` is then `null` and the struct
 TINs of natural persons are personal data. They are sent only to the European Commission's TIN service and returned
 in your own run's dataset. The Actor logs and stores nothing else.
 
-## Open source
-
-The full source of this Actor is public under Apache-2.0: [github.com/LeriderTechnologies/eu-compliance-actors](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/eu-id-validators). Read exactly what it does with your data, run the tests, or host it yourself.
 
 ## Related
 

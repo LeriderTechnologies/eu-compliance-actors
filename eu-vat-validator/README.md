@@ -1,5 +1,7 @@
 # EU VAT Validator (VIES): Check VAT Numbers, Pay Per Answer
 
+> **Open source (Apache-2.0):** [read the code on GitHub](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/eu-vat-validator): see exactly what this Actor does with your data, run the tests, or host it yourself.
+
 Check EU VAT numbers live in **VIES**, the European Commission's official register, and get the registered company
 name back. Built for supplier onboarding, invoice checks, checkout VAT exemption and AI agents that need to know
 "is this VAT number real, and whose is it?"
@@ -78,7 +80,3 @@ VIES; `name` is then `null` and `name_match` stays `null`.
   supplier? Use [Payee Check](https://apify.com/lerider/payee-check), built on the same engine.
 
 Not tax or legal advice. Made by Lerider Technologies (lerider.com).
-
-## Open source
-
-The full source of this Actor is public under Apache-2.0: [github.com/LeriderTechnologies/eu-compliance-actors](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/eu-vat-validator). Read exactly what it does with your data, run the tests, or host it yourself.

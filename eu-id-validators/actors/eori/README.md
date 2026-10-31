@@ -1,5 +1,7 @@
 # EORI Number Validator: EU Customs EORI Check (EOS)
 
+> **Open source (Apache-2.0):** [read the code on GitHub](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/eu-id-validators): see exactly what this Actor does with your data, run the tests, or host it yourself.
+
 Check EORI numbers live in **EOS**, the European Commission's official register of Economic Operators Registration
 and Identification numbers. Built for import/export and customs workflows, freight and marketplace onboarding, and
 AI agents that must confirm a trading partner's customs ID before they book, ship or pay.
@@ -63,9 +65,6 @@ One dataset item per number, in input order:
 `trader` holds whatever EOS publishes for that number (typically name, street, postal code, city, country), or
 `null` when the trader did not consent to publication.
 
-## Open source
-
-The full source of this Actor is public under Apache-2.0: [github.com/LeriderTechnologies/eu-compliance-actors](https://github.com/LeriderTechnologies/eu-compliance-actors/tree/main/eu-id-validators). Read exactly what it does with your data, run the tests, or host it yourself.
 
 ## Related
 
