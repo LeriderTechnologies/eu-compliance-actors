@@ -1,0 +1,8 @@
+EU Compliance Actors
+Copyright 2026 Lerider Technologies
+
+This product includes software developed by Lerider Technologies (https://lerider.com).
+
+Third-party material is not bundled in this repository except unmodified test fixtures, each listed with its
+source and licence in the NOTICE.md next to it (eidas-check/tests/fixtures, einvoice-validator/tests/fixtures).
+The e-invoice rule sets are downloaded at build time; see einvoice-validator/NOTICE.md.

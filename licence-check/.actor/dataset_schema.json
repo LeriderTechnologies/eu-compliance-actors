@@ -1,0 +1,207 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "description": "One item per entity checked. Bad items carry only index + error and are not charged.",
+    "properties": {
+      "index": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Position of the item in your input (0-based)"
+      },
+      "verdict": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "ALLOW",
+          "REVIEW",
+          "BLOCK"
+        ],
+        "description": "Act on this: ALLOW (authorised, nothing against it), REVIEW (a human checks first), BLOCK (warning list or EU sanctions hit)"
+      },
+      "status": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "licensed | licensed_and_warned | warned | sanctioned | licence_withdrawn | registered_offer | possible_match | not_found | not_covered"
+      },
+      "reasons": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        },
+        "description": "Why, one line each"
+      },
+      "notes": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        },
+        "description": "Context that did not change the verdict"
+      },
+      "query": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Your input, normalised"
+      },
+      "licences": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Matched register entries (max 5): register, authority, type, status, authorised_since, withdrawn_on, passported_to, services, match {method, confidence}, history {first_seen_by_us, changes}, data_as_of"
+      },
+      "warnings": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Matched warning-list entries (max 5) with match method and confidence"
+      },
+      "sanctions": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Matched EU sanctions entries (legal entities only)"
+      },
+      "lookalike_domains": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Warning-list domains that resemble yours (not counted as a match)"
+      },
+      "counts": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Number of licence, warning and sanctions matches before the max-5 cut"
+      },
+      "claimed_licence": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Your claimed licence: type, country, covered (false = not_covered), found, found_active"
+      },
+      "as_of": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Date the status refers to"
+      },
+      "coverage": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Per source: status (checked / stale / unavailable), scope, data_as_of, refreshed (snapshot / live)"
+      },
+      "not_covered": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Registers and lists not included, with the reason"
+      },
+      "gleif": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "GLEIF record for the LEI you gave"
+      },
+      "lei": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "LEI status from GLEIF for the LEI you gave, the LEI registered with your KVK number (NL), or the matched register entry's LEI: lei, lei_from (input / kvk / register), lei_source (snapshot / gleif_api / not_in_snapshot / unavailable), data_as_of, legal_name, name_matches, registration_status (ISSUED / LAPSED / RETIRED ...), entity_status, successor_lei, next_renewal, recent_changes (last 90 days of our GLEIF history), renamed_on, lapsed_on. null when no LEI is known."
+      },
+      "attribution": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        },
+        "description": "Source acknowledgements required by the publishers"
+      },
+      "disclaimer": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "error": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Input problem for this item (not charged)"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Verdicts",
+      "transformation": {
+        "fields": [
+          "index",
+          "verdict",
+          "status",
+          "reasons",
+          "as_of",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "index": {
+            "label": "#",
+            "format": "number"
+          },
+          "verdict": {
+            "label": "Verdict",
+            "format": "text"
+          },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
+          "reasons": {
+            "label": "Reasons",
+            "format": "array"
+          },
+          "as_of": {
+            "label": "As of",
+            "format": "text"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}

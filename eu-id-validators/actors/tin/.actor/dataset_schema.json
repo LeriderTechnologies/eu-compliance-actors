@@ -1,0 +1,147 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "description": "One item per number. Malformed items carry only index + error and are not charged.",
+    "properties": {
+      "index": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Position in your input (0-based)"
+      },
+      "country": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Issuing country (EU code, Greece = EL)"
+      },
+      "tin": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "TIN as checked (no spaces, dots, dashes or slashes)"
+      },
+      "valid_structure": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Length and character pattern are right for that country"
+      },
+      "valid_syntax": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Check digit / algorithm is right (null where the country has none)"
+      },
+      "status": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "valid / invalid = the EU service answered (charged once per distinct number); invalid_format, not_checkable, unavailable = not charged"
+      },
+      "valid": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true / false, null = not known"
+      },
+      "checked_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "When the EU service was asked (UTC, ISO 8601)"
+      },
+      "detail": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why the status is what it is"
+      },
+      "source": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Which official EU service answered"
+      },
+      "duplicate_of": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Index of the same number earlier in this batch (not charged again)"
+      },
+      "error": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Malformed item (not charged)"
+      }
+    },
+    "required": [
+      "index"
+    ]
+  },
+  "views": {
+    "overview": {
+      "title": "Results",
+      "transformation": {
+        "fields": [
+          "index",
+          "country",
+          "tin",
+          "status",
+          "valid",
+          "valid_structure",
+          "valid_syntax",
+          "detail",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "index": {
+            "label": "Index"
+          },
+          "country": {
+            "label": "Country"
+          },
+          "tin": {
+            "label": "Tin"
+          },
+          "status": {
+            "label": "Status"
+          },
+          "valid": {
+            "label": "Valid"
+          },
+          "valid_structure": {
+            "label": "Valid structure"
+          },
+          "valid_syntax": {
+            "label": "Valid syntax"
+          },
+          "detail": {
+            "label": "Detail"
+          },
+          "error": {
+            "label": "Error"
+          }
+        }
+      }
+    }
+  }
+}

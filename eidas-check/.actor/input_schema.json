@@ -1,0 +1,83 @@
+{
+  "title": "eIDAS signature check input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "url": {
+      "title": "Document URL",
+      "type": "string",
+      "editor": "textfield",
+      "prefill": "https://raw.githubusercontent.com/esig/dss/master/dss-pades/src/test/resources/validation/pdf-signed-added-page.pdf",
+      "description": "Link to a signed PDF, a signed XML file, or (with a signature file below) any signed document (max 25 MB). Leave empty when you use 'Document (base64)', 'EU act' or 'Documents'."
+    },
+    "pdf_base64": {
+      "title": "Document (base64)",
+      "type": "string",
+      "editor": "textarea",
+      "description": "The document as base64, instead of a URL (PDF, signed XML, or any file that has a separate signature file)."
+    },
+    "signature_url": {
+      "title": "Separate signature file URL (XAdES .xml)",
+      "type": "string",
+      "editor": "textfield",
+      "description": "For a detached XML signature (XAdES / XML-DSig, e.g. a .xml or .sig next to a contract, or an EU Official Journal seal): link to the signature file. The document above is then compared with what the signature covers."
+    },
+    "signature_base64": {
+      "title": "Separate signature file (base64)",
+      "type": "string",
+      "editor": "textarea",
+      "description": "The detached XML signature as base64, instead of 'Separate signature file URL'."
+    },
+    "eu_act": {
+      "title": "EU act (CELEX or ELI)",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Check an EU Official Journal act published from October 2023: CELEX number (e.g. 32024R1689) or ELI (e.g. http://data.europa.eu/eli/reg/2024/1689/oj). The Actor fetches the act's official seal (and the PDF, unless you give your own copy as the document) from the EU Publications Office."
+    },
+    "language": {
+      "title": "Language of the EU act",
+      "type": "string",
+      "editor": "select",
+      "default": "EN",
+      "enum": [
+        "BG",
+        "CS",
+        "DA",
+        "DE",
+        "EL",
+        "EN",
+        "ES",
+        "ET",
+        "FI",
+        "FR",
+        "GA",
+        "HR",
+        "HU",
+        "IT",
+        "LT",
+        "LV",
+        "MT",
+        "NL",
+        "PL",
+        "PT",
+        "RO",
+        "SK",
+        "SL",
+        "SV"
+      ],
+      "description": "Language version of the EU act (only used with 'EU act')."
+    },
+    "require_qualified": {
+      "title": "Require a qualified signature or seal",
+      "type": "boolean",
+      "default": false,
+      "description": "If true, a valid but non-qualified (advanced) signature gets REVIEW instead of ALLOW."
+    },
+    "documents": {
+      "title": "Documents (batch)",
+      "type": "array",
+      "editor": "json",
+      "description": "Up to 20 per run: [{\"url\": \"...\"}, {\"pdf_base64\": \"...\", \"name\": \"contract.pdf\"}, {\"url\": \"contract.pdf link\", \"signature_url\": \"contract.xml link\"}, {\"eu_act\": \"32024R1689\", \"language\": \"DE\"}]. Clear the single fields above when you use this."
+    }
+  }
+}

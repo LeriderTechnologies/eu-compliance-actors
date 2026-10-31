@@ -1,0 +1,170 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "description": "One item per document.",
+    "properties": {
+      "index": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Position in your input (0-based)"
+      },
+      "source": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "URL or name of the document"
+      },
+      "verdict": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ALLOW, REVIEW (a human decides) or BLOCK (do not rely on this document)"
+      },
+      "status": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "checked / unsigned (charged); unreadable (not charged)"
+      },
+      "reasons": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        },
+        "description": "Why, per signature field"
+      },
+      "signatures": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "object",
+          "properties": {
+            "field": {},
+            "verdict": {},
+            "reasons": {},
+            "indication": {},
+            "sub_indication": {},
+            "signer": {},
+            "issuer": {},
+            "claimed_signing_time": {},
+            "proven_signing_time": {},
+            "intact": {},
+            "crypto_valid": {},
+            "trusted": {},
+            "revoked": {},
+            "qualified": {},
+            "qualified_type": {},
+            "qscd": {},
+            "trust_service": {},
+            "coverage": {},
+            "changed_after_signing": {},
+            "change_detail": {},
+            "timestamped": {},
+            "document_match": {},
+            "signed_files": {},
+            "timestamp": {},
+            "archive_timestamps": {}
+          }
+        },
+        "description": "One entry per signature: signer, issuer, times, intact, trusted, qualified, trust service, changes after signing"
+      },
+      "document": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "sha256, bytes, signature_count, document_timestamps"
+      },
+      "require_qualified": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Whether you asked for a qualified signature or seal"
+      },
+      "trusted_lists": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Which EU trusted-list snapshot was used (built_at, source)"
+      },
+      "checked_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "When the check ran (UTC)"
+      },
+      "error": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Download or input problem (not charged)"
+      },
+      "eu_act": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "For an EU Official Journal act: CELEX, language and the Publications Office links of the PDF and its seal"
+      }
+    },
+    "required": [
+      "index"
+    ]
+  },
+  "views": {
+    "overview": {
+      "title": "Verdicts",
+      "transformation": {
+        "fields": [
+          "index",
+          "source",
+          "verdict",
+          "status",
+          "reasons",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "index": {
+            "label": "#",
+            "format": "number"
+          },
+          "source": {
+            "label": "Document"
+          },
+          "verdict": {
+            "label": "Verdict"
+          },
+          "status": {
+            "label": "Status"
+          },
+          "reasons": {
+            "label": "Reasons",
+            "format": "array"
+          },
+          "error": {
+            "label": "Error"
+          }
+        }
+      }
+    }
+  }
+}

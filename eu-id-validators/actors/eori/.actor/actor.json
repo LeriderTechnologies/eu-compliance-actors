@@ -1,0 +1,15 @@
+{
+  "actorSpecification": 1,
+  "name": "eori-validator",
+  "title": "EORI Number Validator: EU Customs EORI Check (EOS)",
+  "description": "Check EU EORI numbers live in the European Commission's EOS customs register: valid or not, plus the trader's name and address where published. Batches of up to 500, GB numbers flagged, $0.002 per answered check; bad formats and outages are free.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "defaultMemoryMbytes": 256,
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json"
+}

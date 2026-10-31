@@ -1,0 +1,238 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "description": "One item per invoice.",
+    "properties": {
+      "index": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Position in your input (0-based)"
+      },
+      "source": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "URL or name of the invoice"
+      },
+      "verdict": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ALLOW (valid), REVIEW (a human decides, e.g. Factur-X MINIMUM/BASIC WL) or BLOCK (not a valid e-invoice)"
+      },
+      "valid": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True when the invoice passes every applicable rule set"
+      },
+      "status": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "checked (charged); not_invoice (not charged)"
+      },
+      "syntax": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "UBL 2.1 Invoice / UBL 2.1 CreditNote / UN/CEFACT CII D16B"
+      },
+      "customization_id": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The invoice's specification identifier (BT-24)"
+      },
+      "standards": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        },
+        "description": "Standards checked"
+      },
+      "rule_sets": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        }
+      },
+      "facturx": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Factur-X/ZUGFeRD profile from the XML"
+      },
+      "reasons": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        },
+        "description": "Verdict in words"
+      },
+      "error_count": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of errors"
+      },
+      "warning_count": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of warnings"
+      },
+      "errors": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "object"
+        },
+        "description": "rule, severity, message, location, rule_set"
+      },
+      "warnings": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "object"
+        }
+      },
+      "summary": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Invoice number, dates, currency, seller, buyer, totals, IBANs, line count"
+      },
+      "container": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "For a PDF: Factur-X/ZUGFeRD embedded file and XMP metadata"
+      },
+      "embedded_xml": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "For a PDF: hash and size of the embedded XML"
+      },
+      "document": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "SHA-256 and size of the file you sent"
+      },
+      "rules_version": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Versions of the official rule sets used"
+      },
+      "profile_requested": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Your 'profile' input"
+      },
+      "checked_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "UTC time of the check"
+      },
+      "error": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why this item could not be checked (not charged)"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Verdicts",
+      "transformation": {
+        "fields": [
+          "index",
+          "source",
+          "verdict",
+          "standards",
+          "error_count",
+          "warning_count",
+          "reasons",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "index": {
+            "label": "#",
+            "format": "number"
+          },
+          "source": {
+            "label": "Invoice",
+            "format": "text"
+          },
+          "verdict": {
+            "label": "Verdict",
+            "format": "text"
+          },
+          "standards": {
+            "label": "Standards",
+            "format": "array"
+          },
+          "error_count": {
+            "label": "Errors",
+            "format": "number"
+          },
+          "warning_count": {
+            "label": "Warnings",
+            "format": "number"
+          },
+          "reasons": {
+            "label": "Why",
+            "format": "array"
+          },
+          "error": {
+            "label": "Not checked",
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}

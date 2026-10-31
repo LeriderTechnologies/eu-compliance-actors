@@ -1,0 +1,15 @@
+{
+  "actorSpecification": 1,
+  "name": "eu-licence-check",
+  "title": "EU Financial License Check: ESMA, EBA, MiCA, Warning Lists",
+  "description": "Is this firm authorised in the EU, for what, since when, or on a regulator warning list? Checks banks, payment and e-money firms, investment firms, MiCA crypto providers and warning lists by name, LEI, registration number or domain. ALLOW / REVIEW / BLOCK verdict for KYB and AI payment agents.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "defaultMemoryMbytes": 2048,
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json"
+}

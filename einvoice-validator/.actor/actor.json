@@ -1,0 +1,15 @@
+{
+  "actorSpecification": 1,
+  "name": "einvoice-validator",
+  "title": "E-Invoice Validator: XRechnung, ZUGFeRD, Factur-X, Peppol",
+  "description": "Validate e-invoices against the official EN 16931, Peppol BIS 3.0 and XRechnung 3.0 rules: UBL, CII and Factur-X/ZUGFeRD PDFs. ALLOW / REVIEW / BLOCK verdict, every error with its rule ID, plus the invoice summary. For AP automation and AI agents.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "defaultMemoryMbytes": 1024,
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json"
+}

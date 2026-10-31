@@ -1,0 +1,17 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "EU TIN Validator results",
+  "description": "One dataset item per number.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Results (dataset items)",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    },
+    "overview": {
+      "type": "string",
+      "title": "Results table",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    }
+  }
+}

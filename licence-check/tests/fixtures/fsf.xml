@@ -1,0 +1,354 @@
+<?xml version="1.0"?><export xmlns="http://eu.europa.ec/fpi/fsd/export" generationDate="G"><sanctionEntity designationDate="2002-06-18" designationDetails="" unitedNationId="" euReferenceNumber="EU.3502.46" logicalId="201">
+        <regulation regulationType="amendment" organisationType="council" publicationDate="2025-01-31" entryIntoForceDate="2025-02-01" numberTitle="2025/206 (L 202500206)" programme="TERR" logicalId="207667">
+            <publicationUrl>https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202500206</publicationUrl>
+        </regulation>
+        <subjectType code="enterprise" classificationCode="E"/>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arab Revolutionary Brigades" function="" title="" nameLanguage="EN" strong="true" regulationLanguage="en" logicalId="314">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Black September" function="" title="" nameLanguage="EN" strong="true" regulationLanguage="en" logicalId="315">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolutionary Organisation of Socialist Muslims" function="" title="" nameLanguage="EN" strong="true" regulationLanguage="en" logicalId="316">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolutionaire Organisatie van Socialistische Moslims" function="" title="" nameLanguage="NL" strong="true" regulationLanguage="en" logicalId="123030">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Zwarte September" function="" title="" nameLanguage="NL" strong="true" regulationLanguage="en" logicalId="123031">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arabische Revolutionaire Brigades" function="" title="" nameLanguage="NL" strong="true" regulationLanguage="en" logicalId="123032">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arabske revolucionarne brigade" function="" title="" nameLanguage="SL" strong="true" regulationLanguage="en" logicalId="123104">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolucionarni svet Fataha" function="" title="" nameLanguage="SL" strong="true" regulationLanguage="en" logicalId="123105">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organizacija Abu Nidal" function="" title="" nameLanguage="SL" strong="true" regulationLanguage="en" logicalId="123106">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolučná organizácia moslimských socialistov" function="" title="" nameLanguage="SK" strong="true" regulationLanguage="en" logicalId="123107">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Čierny september" function="" title="" nameLanguage="SK" strong="true" regulationLanguage="en" logicalId="123108">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arabské revolučné brigády" function="" title="" nameLanguage="SK" strong="true" regulationLanguage="en" logicalId="123109">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolučná rada Fatah" function="" title="" nameLanguage="SK" strong="true" regulationLanguage="en" logicalId="123110">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organizácia Abú Nidála" function="" title="" nameLanguage="SK" strong="true" regulationLanguage="en" logicalId="123111">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organizația Revoluționară a Musulmanilor Socialiști" function="" title="" nameLanguage="RO" strong="true" regulationLanguage="en" logicalId="123112">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Septembrie Negru" function="" title="" nameLanguage="RO" strong="true" regulationLanguage="en" logicalId="123113">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Brigăzile Revoluționare Arabe" function="" title="" nameLanguage="RO" strong="true" regulationLanguage="en" logicalId="123114">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Consiliul Revoluționar Fatah" function="" title="" nameLanguage="RO" strong="true" regulationLanguage="en" logicalId="123115">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organizația Abu Nidal" function="" title="" nameLanguage="RO" strong="true" regulationLanguage="en" logicalId="123116">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organização Revolucionária dos Muçulmanos Socialistas" function="" title="" nameLanguage="PT" strong="true" regulationLanguage="en" logicalId="123117">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Setembro Negro" function="" title="" nameLanguage="PT" strong="true" regulationLanguage="en" logicalId="123118">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Brigadas Revolucionárias Árabes" function="" title="" nameLanguage="PT" strong="true" regulationLanguage="en" logicalId="123119">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Conselho Revolucionário do Fatah" function="" title="" nameLanguage="PT" strong="true" regulationLanguage="en" logicalId="123120">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organização Abu Nidal" function="" title="" nameLanguage="PT" strong="true" regulationLanguage="en" logicalId="123121">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Rewolucyjna Organizacja Muzułmańskich Socjalistów" function="" title="" nameLanguage="PL" strong="true" regulationLanguage="en" logicalId="123122">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Czarny Wrzesień" function="" title="" nameLanguage="PL" strong="true" regulationLanguage="en" logicalId="123123">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Rewolucyjne Brygady Arabskie" function="" title="" nameLanguage="PL" strong="true" regulationLanguage="en" logicalId="123124">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Rewolucyjna Rada Fatah" function="" title="" nameLanguage="PL" strong="true" regulationLanguage="en" logicalId="123125">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organizacja Abu Nidala" function="" title="" nameLanguage="PL" strong="true" regulationLanguage="en" logicalId="123126">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolucionarna organizacija socijalističkih muslimana" function="" title="" nameLanguage="HR" strong="true" regulationLanguage="en" logicalId="156147">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Crni rujan" function="" title="" nameLanguage="HR" strong="true" regulationLanguage="en" logicalId="156148">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arapske revolucionarne brigade" function="" title="" nameLanguage="HR" strong="true" regulationLanguage="en" logicalId="156149">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolucionarno vijeće Fataha" function="" title="" nameLanguage="HR" strong="true" regulationLanguage="en" logicalId="156150">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organisatie Abu Nidal" function="" title="" nameLanguage="NL" strong="true" regulationLanguage="en" logicalId="156152">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revoluční organizace socialistických muslimů" function="" title="" nameLanguage="CS" strong="true" regulationLanguage="en" logicalId="156181">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Černé září" function="" title="" nameLanguage="CS" strong="true" regulationLanguage="en" logicalId="156182">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arabské revoluční brigády" function="" title="" nameLanguage="CS" strong="true" regulationLanguage="en" logicalId="156183">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revoluční rada Fatáhu" function="" title="" nameLanguage="CS" strong="true" regulationLanguage="en" logicalId="156184">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organizace Abú Nidala" function="" title="" nameLanguage="CS" strong="true" regulationLanguage="en" logicalId="161428">
+            <regulationSummary regulationType="amendment" publicationDate="2024-01-16" numberTitle="2024/329 (OJ L16012024)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202400329"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Szocialista Muzulmánok Forradalmi Szervezete" function="" title="" nameLanguage="HU" strong="true" regulationLanguage="en" logicalId="123039">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Fekete Szeptember" function="" title="" nameLanguage="HU" strong="true" regulationLanguage="en" logicalId="123040">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arab Forradalmi Brigádok" function="" title="" nameLanguage="HU" strong="true" regulationLanguage="en" logicalId="123041">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Fatah Forradalmi Tanács" function="" title="" nameLanguage="HU" strong="true" regulationLanguage="en" logicalId="123042">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Abu Nidal Szervezet" function="" title="" nameLanguage="HU" strong="true" regulationLanguage="en" logicalId="123043">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Musulmonų socialistų revoliucinė organizacija" function="" title="" nameLanguage="LT" strong="true" regulationLanguage="en" logicalId="123044">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Juodasis rugsėjis" function="" title="" nameLanguage="LT" strong="true" regulationLanguage="en" logicalId="123045">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arabų revoliucinės brigados" function="" title="" nameLanguage="LT" strong="true" regulationLanguage="en" logicalId="123046">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Fatah revoliucinė taryba" function="" title="" nameLanguage="LT" strong="true" regulationLanguage="en" logicalId="123047">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Fatah Revolutionaire Raad" function="" title="" nameLanguage="NL" strong="true" regulationLanguage="en" logicalId="123033">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="l-Organizzazzjoni Rivoluzzjonarja tal-Musulmani Sojalisti" function="" title="" nameLanguage="MT" strong="true" regulationLanguage="en" logicalId="123034">
+            <remark>Not in MT Regulation 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="s-Settembru l-Iswed" function="" title="" nameLanguage="MT" strong="true" regulationLanguage="en" logicalId="123035">
+            <remark>Not in MT Regulation 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="l-Brigati Rivoluzzjonarji Garab" function="" title="" nameLanguage="MT" strong="true" regulationLanguage="en" logicalId="123036">
+            <remark>Not in MT Regulation 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="l-Kunsill Rivoluzzjonarju tal-Fatah" function="" title="" nameLanguage="MT" strong="true" regulationLanguage="en" logicalId="123037">
+            <remark>Not in MT Regulation 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="L-Organizzazzjoni Abu Nidal" function="" title="" nameLanguage="MT" strong="true" regulationLanguage="en" logicalId="123038">
+            <remark>Not in MT Regulation 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Abu Nidal organizacija" function="" title="" nameLanguage="LT" strong="true" regulationLanguage="en" logicalId="123048">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organizzazione rivoluzionaria dei musulmani socialisti" function="" title="" nameLanguage="IT" strong="true" regulationLanguage="en" logicalId="123049">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Settembre nero" function="" title="" nameLanguage="IT" strong="true" regulationLanguage="en" logicalId="123050">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Brigate rivoluzionarie arabe" function="" title="" nameLanguage="IT" strong="true" regulationLanguage="en" logicalId="123051">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Consiglio rivoluzionario Fatah" function="" title="" nameLanguage="IT" strong="true" regulationLanguage="en" logicalId="123052">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organizzazione Abu Nidal" function="" title="" nameLanguage="IT" strong="true" regulationLanguage="en" logicalId="123053">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolucionarna organizacija socijalističkih muslimana" function="" title="" nameLanguage="HR" strong="true" regulationLanguage="en" logicalId="123054">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Crni rujan" function="" title="" nameLanguage="HR" strong="true" regulationLanguage="en" logicalId="123055">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arapske revolucionarne brigade" function="" title="" nameLanguage="HR" strong="true" regulationLanguage="en" logicalId="123056">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolucionarno vijeće Fataha" function="" title="" nameLanguage="HR" strong="true" regulationLanguage="en" logicalId="123057">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organizacija Abu Nidal" function="" title="" nameLanguage="HR" strong="true" regulationLanguage="en" logicalId="123058">
+            <remark>Not in GA Reg 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Eagraíocht Réabhlóide na Moslamach Sóisialach" function="" title="" nameLanguage="GA" strong="true" regulationLanguage="en" logicalId="123059">
+            <remark>Not in GA Regulation 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Lucht Mheán Fómhair Dubh" function="" title="" nameLanguage="GA" strong="true" regulationLanguage="en" logicalId="123060">
+            <remark>Not in GA Regulation 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="na Briogáidí Réabhlóideacha Arabacha" function="" title="" nameLanguage="GA" strong="true" regulationLanguage="en" logicalId="123061">
+            <remark>Not in GA Regulation 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Comhairle Réabhlóide Fatah" function="" title="" nameLanguage="GA" strong="true" regulationLanguage="en" logicalId="123062">
+            <remark>Not in GA Regulation 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Eagraíocht Abu Nidal" function="" title="" nameLanguage="GA" strong="true" regulationLanguage="en" logicalId="123063">
+            <remark>Not in GA Regulation 2023/1505</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organisation révolutionnaire des musulmans socialistes" function="" title="" nameLanguage="FR" strong="true" regulationLanguage="en" logicalId="123064">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Septembre noir" function="" title="" nameLanguage="FR" strong="true" regulationLanguage="en" logicalId="123065">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Brigades révolutionnaires arabes" function="" title="" nameLanguage="FR" strong="true" regulationLanguage="en" logicalId="123066">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Conseil révolutionnaire du Fatah" function="" title="" nameLanguage="FR" strong="true" regulationLanguage="en" logicalId="123067">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organisation Abou Nidal" function="" title="" nameLanguage="FR" strong="true" regulationLanguage="en" logicalId="123068">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Επαναστατική Οργάνωση Σοσιαλιστών Μουσουλμάνων" function="" title="" nameLanguage="EL" strong="true" regulationLanguage="en" logicalId="123069">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Μαύρος Σεπτέμβρης" function="" title="" nameLanguage="EL" strong="true" regulationLanguage="en" logicalId="123070">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Αραβικές Επαναστατικές Ταξιαρχίες" function="" title="" nameLanguage="EL" strong="true" regulationLanguage="en" logicalId="123071">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Επαναστατικό Συμβούλιο Φατάχ" function="" title="" nameLanguage="EL" strong="true" regulationLanguage="en" logicalId="123072">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Οργάνωση Abu Nidal" function="" title="" nameLanguage="EL" strong="true" regulationLanguage="en" logicalId="123073">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Sotsialistlike Moslemite Revolutsiooniline Organisatsioon" function="" title="" nameLanguage="ET" strong="true" regulationLanguage="en" logicalId="123074">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Must September" function="" title="" nameLanguage="ET" strong="true" regulationLanguage="en" logicalId="123075">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Araabia Revolutsioonilised Brigaadid" function="" title="" nameLanguage="ET" strong="true" regulationLanguage="en" logicalId="123076">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Fatah' Revolutsiooniline Nõukogu" function="" title="" nameLanguage="ET" strong="true" regulationLanguage="en" logicalId="123077">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Abu Nidali Organisatsioon" function="" title="" nameLanguage="ET" strong="true" regulationLanguage="en" logicalId="123078">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolutionäre Organisation der Sozialistischen Moslems" function="" title="" nameLanguage="DE" strong="true" regulationLanguage="en" logicalId="123079">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Schwarzer September" function="" title="" nameLanguage="DE" strong="true" regulationLanguage="en" logicalId="123080">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arabische Revolutionäre Brigaden" function="" title="" nameLanguage="DE" strong="true" regulationLanguage="en" logicalId="123081">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Fatah-Revolutionsrat" function="" title="" nameLanguage="DE" strong="true" regulationLanguage="en" logicalId="123082">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revoluční organizace socialistických muslimů" function="" title="" nameLanguage="CS" strong="true" regulationLanguage="en" logicalId="123083">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Černé září" function="" title="" nameLanguage="CS" strong="true" regulationLanguage="en" logicalId="123084">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Arabské revoluční brigády" function="" title="" nameLanguage="CS" strong="true" regulationLanguage="en" logicalId="123085">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revoluční rada Fatáhu" function="" title="" nameLanguage="CS" strong="true" regulationLanguage="en" logicalId="123086">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organización Revolucionaria de los Musulmanes Socialistas" function="" title="" nameLanguage="ES" strong="true" regulationLanguage="en" logicalId="123088">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Septiembre Negro" function="" title="" nameLanguage="ES" strong="true" regulationLanguage="en" logicalId="123089">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Brigadas Revolucionarias Árabes" function="" title="" nameLanguage="ES" strong="true" regulationLanguage="en" logicalId="123090">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Consejo Revolucionario de Al Fatah" function="" title="" nameLanguage="ES" strong="true" regulationLanguage="en" logicalId="123091">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Organización Abu Nidal" function="" title="" nameLanguage="ES" strong="true" regulationLanguage="en" logicalId="123092">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Революционна организация на мюсюлманите социалисти" function="" title="" nameLanguage="BG" strong="true" regulationLanguage="en" logicalId="123093">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Черен септември" function="" title="" nameLanguage="BG" strong="true" regulationLanguage="en" logicalId="123094">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Арабски революционни бригади" function="" title="" nameLanguage="BG" strong="true" regulationLanguage="en" logicalId="123095">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Революционен съвет на Фатах" function="" title="" nameLanguage="BG" strong="true" regulationLanguage="en" logicalId="123096">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Организация „Абу Нидал”" function="" title="" nameLanguage="BG" strong="true" regulationLanguage="en" logicalId="123097">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Abu Nidals grupp" function="" title="" nameLanguage="SV" strong="true" regulationLanguage="en" logicalId="123098">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Musta syyskuu" function="" title="" nameLanguage="FI" strong="true" regulationLanguage="en" logicalId="123099">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Fatahin vallankumousneuvosto" function="" title="" nameLanguage="FI" strong="true" regulationLanguage="en" logicalId="123100">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Abu Nidal - järjestö" function="" title="" nameLanguage="FI" strong="true" regulationLanguage="en" logicalId="123101">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Revolucionarna organizacija socialističnih muslimanov" function="" title="" nameLanguage="SL" strong="true" regulationLanguage="en" logicalId="123102">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Črni September" function="" title="" nameLanguage="SL" strong="true" regulationLanguage="en" logicalId="123103">
+            <regulationSummary regulationType="amendment" publicationDate="2020-01-14" numberTitle="2020/19 (OJ L8I)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.LI.2020.008.01.0001.01.ENG&amp;toc=OJ:L:2020:008I:TOC"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Abu Nidal Organisation" function="" title="" nameLanguage="EN" strong="true" regulationLanguage="en" logicalId="311">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="ANO" function="" title="" nameLanguage="EN" strong="true" regulationLanguage="en" logicalId="312">
+            <remark>Abu Nidal Organisation</remark>
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+        <nameAlias firstName="" middleName="" lastName="" wholeName="Fatah Revolutionary Council" function="" title="" nameLanguage="EN" strong="true" regulationLanguage="en" logicalId="313">
+            <regulationSummary regulationType="amendment" publicationDate="2023-07-21" numberTitle="2023/1505 (OJ L184)" publicationUrl="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023R1505"/>
+        </nameAlias>
+    </sanctionEntity><sanctionEntity euReferenceNumber="EU.TEST.1" logicalId="999999" designationDate="2020-01-01"><regulation programme="TEST" numberTitle="0/2020"/><subjectType code="person" classificationCode="P"/><nameAlias wholeName="Synthetic Test Person" /></sanctionEntity></export>

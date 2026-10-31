@@ -1,0 +1,17 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Licence check results",
+  "description": "One dataset item per entity: verdict ALLOW / REVIEW / BLOCK with reasons, matched licences, warnings and per-source coverage.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Checks (dataset items)",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    },
+    "overview": {
+      "type": "string",
+      "title": "Verdicts table",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    }
+  }
+}

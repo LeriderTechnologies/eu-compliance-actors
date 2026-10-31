@@ -1,0 +1,17 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "EU VAT Validator results",
+  "description": "One dataset item per VAT number: VIES status, registered name and the offline format check.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Results (dataset items)",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    },
+    "overview": {
+      "type": "string",
+      "title": "Results table",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    }
+  }
+}

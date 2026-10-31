@@ -1,0 +1,97 @@
+{
+  "title": "EU licence & warning-list check input",
+  "type": "object",
+  "schemaVersion": 1,
+  "description": "One entity (fields below) or a batch in 'entities'. Give at least one of name, lei, reg_number, domain. Each entity checked = one 'licence-check' event; malformed items are not charged.",
+  "properties": {
+    "name": {
+      "title": "Firm name",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Legal or trading name, e.g. 'Mollie B.V.'. Legal forms (B.V., GmbH, Ltd...) and accents are normalised.",
+      "prefill": "Mollie B.V."
+    },
+    "lei": {
+      "title": "LEI",
+      "type": "string",
+      "editor": "textfield",
+      "description": "20-character Legal Entity Identifier. Strongest match key; the legal name is also looked up at GLEIF (CC0) unless resolve_lei is off."
+    },
+    "reg_number": {
+      "title": "Registration number",
+      "type": "string",
+      "editor": "textfield",
+      "description": "The regulator's or business register's number as published in the register (e.g. DNB 'F0038', ECB RIAD code, SIREN for AMF PSAN and portfolio management companies, AMF number such as 'GP-08000008' or biens-divers 'D-19-01'). For a Dutch firm, an 8-digit KVK number with country NL also finds its LEI (and through it the register entry)."
+    },
+    "kvk": {
+      "title": "KVK number (NL)",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Dutch Chamber of Commerce (KVK) number, 8 digits. Finds the firm's LEI and, through it, the register entry. Same as an 8-digit reg_number with country NL."
+    },
+    "country": {
+      "title": "Home country",
+      "type": "string",
+      "editor": "textfield",
+      "description": "ISO 3166 alpha-2 (NL, DE, FR...). Lowers name-match confidence for firms from other countries (passported firms excepted)."
+    },
+    "domain": {
+      "title": "Website, domain or e-mail",
+      "type": "string",
+      "editor": "textfield",
+      "description": "The domain you are dealing with (https://example.com, example.com or someone@example.com). Matched against warning lists and register websites; look-alike domains are flagged."
+    },
+    "claimed_licence": {
+      "title": "Claimed licence",
+      "type": "string",
+      "editor": "textfield",
+      "description": "What the firm says it is, e.g. 'payment institution NL', 'e-money', 'bank', 'MiCA CASP', 'investment firm DE'. Types we do not cover (insurance, consumer credit...) return not_covered."
+    },
+    "as_of": {
+      "title": "As of date",
+      "type": "string",
+      "editor": "textfield",
+      "description": "YYYY-MM-DD. Status on that date, from the registers' own authorisation/withdrawal dates and our recorded history. Default: today."
+    },
+    "entities": {
+      "title": "Batch: entities",
+      "type": "array",
+      "editor": "json",
+      "sectionCaption": "Batch",
+      "description": "A list of {name, lei, reg_number, country, domain, claimed_licence, as_of}. Max 500. Top-level as_of applies to all items that do not set one."
+    },
+    "refresh": {
+      "title": "Refresh sources live",
+      "type": "string",
+      "editor": "select",
+      "enum": [
+        "auto",
+        "never",
+        "always"
+      ],
+      "enumTitles": [
+        "Auto: refetch sources older than max_age_hours",
+        "Never: snapshot only (fastest)",
+        "Always: refetch every source"
+      ],
+      "default": "auto",
+      "sectionCaption": "Data freshness",
+      "description": "The bundled data is rebuilt every day at about 11:15 Amsterdam time from our daily copies of each register. 'auto' (default) also fetches any source older than max_age_hours live from the official file at run start (adds 5-60 s when needed); 'never' uses the bundled data only; 'always' fetches every source live."
+    },
+    "max_age_hours": {
+      "title": "Max data age (hours)",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "default": 48,
+      "description": "With refresh 'auto': sources whose data_as_of is older than this many hours are fetched live (default 48)."
+    },
+    "resolve_lei": {
+      "title": "Resolve LEI at GLEIF",
+      "type": "boolean",
+      "editor": "checkbox",
+      "default": true,
+      "description": "Look up the LEI's legal name at GLEIF so registers that list the firm without its LEI still match."
+    }
+  }
+}

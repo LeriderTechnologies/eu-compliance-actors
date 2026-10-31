@@ -1,0 +1,9 @@
+{
+  "name": "eori-validator",
+  "event": "eori-check",
+  "price": 0.002,
+  "event_title": "EORI number checked in EU EOS",
+  "event_desc": "One EORI number the EU EOS service answered (valid or invalid). Bad formats, GB/non-EU numbers, repeats in the same run, EOS outages and malformed items are free.",
+  "seoTitle": "EORI Number Validator API: Bulk EU EORI Check (EOS)",
+  "seoDescription": "Validate EU EORI numbers live in the EC EOS register, with trader name and address where published. Bulk up to 500. $0.002 per answered check; errors free."
+}

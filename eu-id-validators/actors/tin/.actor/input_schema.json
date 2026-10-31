@@ -1,0 +1,27 @@
+{
+  "title": "EU TIN Validator input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "country": {
+      "title": "Country",
+      "type": "string",
+      "editor": "textfield",
+      "prefill": "DE",
+      "description": "2-letter code of the EU country that issued the TIN, e.g. DE, FR, IT, NL (Greece: EL or GR)."
+    },
+    "tin": {
+      "title": "TIN",
+      "type": "string",
+      "editor": "textfield",
+      "prefill": "86095742719",
+      "description": "The tax identification number, without a country prefix. Spaces, dots, dashes and slashes are ignored. Leave empty when you use 'TINs (batch)'."
+    },
+    "tins": {
+      "title": "TINs (batch)",
+      "type": "array",
+      "editor": "json",
+      "description": "Up to 200 items per run: [{\"country\": \"DE\", \"tin\": \"...\"}, ...]. Clear the single 'TIN' field when you use this."
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "title": "E-invoice validator input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "url": {
+      "title": "Invoice URL",
+      "type": "string",
+      "editor": "textfield",
+      "prefill": "https://raw.githubusercontent.com/OpenPEPPOL/peppol-bis-invoice-3/master/rules/examples/base-example.xml",
+      "description": "Link to an e-invoice: UBL 2.1 or CII XML (XRechnung, Peppol BIS, EN 16931) or a Factur-X / ZUGFeRD PDF (max 25 MB). Leave empty when you use another field."
+    },
+    "file_base64": {
+      "title": "Invoice file (base64)",
+      "type": "string",
+      "editor": "textarea",
+      "description": "The invoice file (XML or Factur-X/ZUGFeRD PDF) as base64, instead of a URL."
+    },
+    "xml": {
+      "title": "Invoice XML (text)",
+      "type": "string",
+      "editor": "textarea",
+      "description": "The invoice XML pasted as text, instead of a URL."
+    },
+    "profile": {
+      "title": "Rules",
+      "type": "string",
+      "editor": "select",
+      "default": "auto",
+      "enum": [
+        "auto",
+        "en16931",
+        "peppol",
+        "xrechnung",
+        "all"
+      ],
+      "enumTitles": [
+        "Auto (from the invoice's CustomizationID)",
+        "EN 16931 only",
+        "EN 16931 + Peppol BIS 3.0",
+        "EN 16931 + XRechnung 3.0",
+        "All rule sets"
+      ],
+      "description": "Which rules to apply. Auto reads the invoice's specification identifier: EN 16931 always, plus Peppol BIS Billing 3.0 or XRechnung 3.0 when the invoice declares them."
+    },
+    "invoices": {
+      "title": "Invoices (batch)",
+      "type": "array",
+      "editor": "json",
+      "description": "Up to 100 per run: [{\"url\": \"...\"}, {\"file_base64\": \"...\", \"name\": \"INV-1.pdf\"}, {\"xml\": \"<Invoice ...>\"}]. Clear 'Invoice URL' when you use this."
+    }
+  }
+}

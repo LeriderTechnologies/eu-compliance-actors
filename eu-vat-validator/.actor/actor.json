@@ -1,0 +1,15 @@
+{
+  "actorSpecification": 1,
+  "name": "eu-vat-validator",
+  "title": "EU VAT Validator (VIES): Check VAT Numbers, Pay Per Answer",
+  "description": "Validate EU VAT numbers live in the official EU VIES register and get the registered company name. Offline format and Dutch checksum pre-check, optional name match, batches of up to 200. $0.003 per VAT number VIES answers; bad formats and VIES outages are free.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "defaultMemoryMbytes": 256,
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json"
+}

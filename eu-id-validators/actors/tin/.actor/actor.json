@@ -1,0 +1,15 @@
+{
+  "actorSpecification": 1,
+  "name": "eu-tin-validator",
+  "title": "EU TIN Validator: Tax ID Number Check for 27 EU Countries",
+  "description": "Check Tax Identification Numbers (TINs) of all 27 EU member states with the European Commission's official TIN service: structure and check digit, for DAC7 seller onboarding, KYC and invoices. Batches of up to 200, $0.002 per answered check; outages are free.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "defaultMemoryMbytes": 256,
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json"
+}

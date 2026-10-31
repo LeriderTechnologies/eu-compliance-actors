@@ -1,0 +1,20 @@
+{
+  "title": "EORI Validator input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "eori": {
+      "title": "EORI number",
+      "type": "string",
+      "editor": "textfield",
+      "prefill": "IE6388047V",
+      "description": "One EORI number with its country prefix, e.g. DE123456789012345 or NL123456789. Spaces, dots and dashes are ignored. Leave empty when you use 'EORI numbers (batch)'."
+    },
+    "eoris": {
+      "title": "EORI numbers (batch)",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Up to 500 EORI numbers per run. Clear the single 'EORI number' field when you use this."
+    }
+  }
+}

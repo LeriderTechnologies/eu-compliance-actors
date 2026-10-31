@@ -1,0 +1,26 @@
+{
+  "title": "EU VAT Validator input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "vat_id": {
+      "title": "VAT number",
+      "type": "string",
+      "editor": "textfield",
+      "description": "One EU VAT number with its country prefix, e.g. NL123456789B01, DE123456789 or FR40303265045. Spaces, dots and dashes are ignored; GR is read as EL. Leave empty when you use 'VAT numbers (batch)'.",
+      "prefill": "IE6388047V"
+    },
+    "expected_name": {
+      "title": "Expected company name (optional)",
+      "type": "string",
+      "editor": "textfield",
+      "description": "For a single VAT number: the name you expect. The output's name_match is 1.0 when the VIES name is the same company (legal forms and punctuation ignored), lower when it differs. Only works for countries where VIES returns a name."
+    },
+    "vat_ids": {
+      "title": "VAT numbers (batch)",
+      "type": "array",
+      "editor": "json",
+      "description": "Up to 200 VAT numbers per run: a list of strings, or of objects {\"vat_id\": ..., \"expected_name\": ...}. Clear the single 'VAT number' field when you use this."
+    }
+  }
+}

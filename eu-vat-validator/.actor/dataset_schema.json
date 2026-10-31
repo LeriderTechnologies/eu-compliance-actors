@@ -1,0 +1,170 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "description": "One item per VAT number. Malformed items carry only index + error and are not charged.",
+    "properties": {
+      "index": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Position in your input (0-based)"
+      },
+      "vat_id": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "VAT number as checked (normalised: no spaces, GR -> EL)"
+      },
+      "country": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Two-letter VIES prefix"
+      },
+      "format_ok": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Offline format check; null = not an EU VIES prefix"
+      },
+      "nl_checksum_ok": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Dutch VAT ids only: offline checksum"
+      },
+      "status": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "valid",
+          "invalid",
+          "invalid_format",
+          "not_checkable",
+          "unavailable",
+          null
+        ],
+        "description": "valid / invalid = VIES answered (charged); invalid_format, not_checkable, unavailable = not charged"
+      },
+      "valid": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true = registered for intra-EU trade; false = not; null = unknown"
+      },
+      "name": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Registered name from VIES (some countries never return one)"
+      },
+      "name_match": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "minimum": 0,
+        "maximum": 1,
+        "description": "1.0 = same company as expected_name"
+      },
+      "checked_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "When VIES was asked (UTC, ISO 8601)"
+      },
+      "cached": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true = same id already checked earlier in this run"
+      },
+      "detail": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why the status is what it is"
+      },
+      "source": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "VIES when the register was asked"
+      },
+      "error": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Malformed item (not charged)"
+      }
+    },
+    "required": [
+      "index"
+    ]
+  },
+  "views": {
+    "overview": {
+      "title": "Results",
+      "transformation": {
+        "fields": [
+          "index",
+          "vat_id",
+          "status",
+          "valid",
+          "name",
+          "name_match",
+          "detail",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "vat_id": {
+            "label": "VAT number"
+          },
+          "status": {
+            "label": "Status"
+          },
+          "valid": {
+            "label": "Valid",
+            "format": "boolean"
+          },
+          "name": {
+            "label": "Registered name"
+          },
+          "name_match": {
+            "label": "Name match",
+            "format": "number"
+          },
+          "detail": {
+            "label": "Detail"
+          },
+          "error": {
+            "label": "Error"
+          },
+          "index": {
+            "label": "#",
+            "format": "number"
+          }
+        }
+      }
+    }
+  }
+}

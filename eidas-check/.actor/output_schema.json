@@ -1,0 +1,17 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "eIDAS signature check results",
+  "description": "One dataset item per document.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Results (dataset items)",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    },
+    "overview": {
+      "type": "string",
+      "title": "Verdicts table",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    }
+  }
+}

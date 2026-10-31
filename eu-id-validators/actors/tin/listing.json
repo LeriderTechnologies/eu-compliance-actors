@@ -1,0 +1,9 @@
+{
+  "name": "eu-tin-validator",
+  "event": "tin-check",
+  "price": 0.002,
+  "event_title": "TIN checked by the EU TIN service",
+  "event_desc": "One TIN the European Commission's TIN service answered (valid or invalid structure/check digit). Non-EU countries, repeats in the same run, outages and malformed items are free.",
+  "seoTitle": "EU TIN Validator API: Tax ID Number Check (DAC7, KYC)",
+  "seoDescription": "Validate tax ID numbers for all 27 EU countries with the EC TIN service: structure and check digit. Bulk up to 200, for DAC7 and KYC. $0.002 per check."
+}
