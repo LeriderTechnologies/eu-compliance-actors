@@ -36,6 +36,7 @@ def fixture_records():
     recs += S.amf_psan_records(fx("amf_psan.csv"))
     recs += S.amf_sgp_records(fx("amf_sgp.csv"))
     recs += S.amf_biens_divers_records(fx("amf_biens_divers.csv"))
+    recs += S.iscan_records(json.loads(fx("iscan.json")))
     # one synthetic MiCA issuer so every source is present
     recs += [S._rec("mica_issuer", "EMT|x", name="Test Token Issuer B.V.", country="NL", status="active",
                     type="E-money token issuer (MiCA)")]
@@ -237,6 +238,214 @@ def test_withdrawn_licence_review():
     assert r["verdict"] == "REVIEW" and r["status"] == "licence_withdrawn"
 
 
+def test_generic_investment_firm_claim_matches_aifm_and_ucits(): # Seawind Capital Partners false not-found
+    # An AIFM is listed in the same ESMA MiFID register as 'Investment firm', just under its own entityTypeLabel;
+    # a generic "investment firm" claim must not come back not-found for it. But a firm
+    # that holds only that AIFM/UCITS ManCo authorisation is not a MiFID investment firm: found=true, matched_as
+    # set, verdict REVIEW.
+    r = run({"name": "Example Fund Management B.V.", "country": "NL", "claimed_licence": "investment firm NL"})
+    assert r["claimed_licence"]["type"] == "investment_firm"
+    assert r["claimed_licence"]["covered"] is True and r["claimed_licence"]["found_active"] is True
+    assert r["claimed_licence"]["matched_as"] == ["AIFM"]
+    assert r["verdict"] == "REVIEW"
+    assert any("found only as AIFM, not as a MiFID investment firm" in x for x in r["reasons"])
+    # same for a UCITS management company
+    r = run({"name": "Example UCITS Manco S.A.", "country": "LU", "claimed_licence": "investment firm LU"})
+    assert r["claimed_licence"]["type"] == "investment_firm" and r["claimed_licence"]["found_active"] is True
+    assert r["claimed_licence"]["matched_as"] == ["UCITS management company"]
+    assert r["verdict"] == "REVIEW"
+    # a precise, strongly-worded claim ("MiFID investment firm") on the AIFM-only fixture must not read as licensed
+    r = run({"name": "Example Fund Management B.V.", "country": "NL", "claimed_licence": "MiFID investment firm NL"})
+    assert r["claimed_licence"]["matched_as"] == ["AIFM"] and r["verdict"] == "REVIEW"
+    # claim text that only says "asset manager" (the parser's own soft wording for this type) may stay ALLOW,
+    # since it does not promise the precise MiFID licence; matched_as is still shown
+    r = run({"name": "Example Fund Management B.V.", "country": "NL", "claimed_licence": "asset manager NL"})
+    assert r["claimed_licence"]["matched_as"] == ["AIFM"] and r["claimed_licence"]["found_active"] is True
+    assert r["verdict"] == "ALLOW"
+    # a firm that really holds the strict "Investment firm" licence: generic claim stays ALLOW, no matched_as
+    r = run({"name": "Example Investment Firm B.V.", "country": "NL", "claimed_licence": "investment firm NL"})
+    assert r["claimed_licence"]["found_active"] is True and "matched_as" not in (r["claimed_licence"] or {})
+    assert r["verdict"] == "ALLOW" and r["status"] == "licensed"
+    # a precise AIFM/UCITS claim still works on its own, narrower type (unaffected by the widened investment_firm)
+    r = run({"name": "Example Fund Management B.V.", "country": "NL", "claimed_licence": "AIFM NL"})
+    assert r["claimed_licence"]["type"] == "aifm" and r["claimed_licence"]["found_active"] is True
+    assert "matched_as" not in (r["claimed_licence"] or {})
+    # a firm that really is only a MiFID investment firm (not AIFM/UCITS) is unaffected
+    r = run({"lei": "529900BI1V1F4U1MHN03"})  # Raiffeisenbank Gotha eG, type 'Investment firm', withdrawn
+    assert r["licences"][0]["type"] == "Investment firm"
+    # an AIFM does not satisfy a precise UCITS ManCo claim, and vice versa (no over-broadening)
+    r = run({"name": "Example Fund Management B.V.", "country": "NL",
+             "claimed_licence": {"type": "ucits_manco", "country": "NL"}})
+    assert r["claimed_licence"]["found"] is False
+    # an unrelated claim type (bank, a different source) still correctly finds nothing: no over-broadening
+    r = run({"name": "Example Fund Management B.V.", "country": "NL", "claimed_licence": "bank NL"})
+    assert r["claimed_licence"]["covered"] is True and r["claimed_licence"]["found"] is False
+
+
+def test_fund_manager_wording_maps_to_aifm_or_ucits(): # "fund manager" parsed to other -> not_covered
+    for text in ("fund manager NL", "fund management company LU", "Fund Managers", "investment fund manager",
+                 "fondsbeheerder NL", "Fondsmanager DE", "beheerder van beleggingsinstellingen NL",
+                 "Kapitalverwaltungsgesellschaft DE", "KVG DE", "gestionnaire de fonds FR", "ManCo LU"):
+        assert check.parse_claim(text)["type"] == "fund_manager", text
+    # precise wordings keep their own narrower types
+    for text, ty in (("AIF manager NL", "aifm"), ("alternative investment fund manager NL", "aifm"),
+                     ("AIFMD manager", "aifm"), ("AIFM NL", "aifm"), ("UCITS management company LU", "ucits_manco"),
+                     ("UCITS fund manager", "ucits_manco"), ("UCITS ManCo LU", "ucits_manco"),
+                     ("management company LU", "ucits_manco"), ("asset manager NL", "investment_firm"),
+                     ("société de gestion de portefeuille FR", "sgp"), ("crowdfunding manager", "crowdfunding")):
+        assert check.parse_claim(text)["type"] == ty, text
+    # negatives: "fund" alone (or inside another word) must not map to a fund-manager claim
+    for text in ("fund NL", "investment fund", "hedge fund NL", "mutual fund", "fund administrator NL",
+                 "refund management NL", "funding platform"):
+        assert check.parse_claim(text)["type"] == "other", text
+    # an AIFM-only firm (ESMA): found + ALLOW, no matched_as (an AIFM is a fund manager)
+    r = run({"name": "Example Fund Management B.V.", "country": "NL", "claimed_licence": "fund manager NL"})
+    assert r["claimed_licence"]["type"] == "fund_manager" and r["claimed_licence"]["covered"] is True
+    assert r["claimed_licence"]["found_active"] is True and "matched_as" not in r["claimed_licence"]
+    assert r["verdict"] == "ALLOW", r["reasons"]
+    # a UCITS-only management company (ESMA) also satisfies it
+    r = run({"name": "Example UCITS Manco S.A.", "country": "LU", "claimed_licence": "fund management company LU"})
+    assert r["claimed_licence"]["found_active"] is True and r["verdict"] == "ALLOW", r["reasons"]
+    # AMF SGP list (FR): an SGP managing AIFs (Gestion de FIA) or UCITS (OPCVM)
+    r = run({"name": "Elevation Capital Partners", "country": "FR", "claimed_licence": "fund manager FR"})
+    assert r["claimed_licence"]["found_active"] is True
+    r = run({"name": "Mandarine Gestion", "country": "FR", "claimed_licence": "gestionnaire de fonds FR"})
+    assert r["claimed_licence"]["found_active"] is True and r["verdict"] == "ALLOW", r["reasons"]
+    # negative: a firm that is only a MiFID investment firm is not a fund manager
+    r = run({"name": "Example Investment Firm B.V.", "country": "NL", "claimed_licence": "fund manager NL"})
+    assert r["claimed_licence"]["covered"] is True and r["claimed_licence"]["found"] is False
+    assert r["verdict"] == "REVIEW"
+    # an object claim with the new type works too
+    r = run({"name": "Example Fund Management B.V.", "claimed_licence": {"type": "fund_manager", "country": "NL"}})
+    assert r["claimed_licence"]["type"] == "fund_manager" and r["claimed_licence"]["found_active"] is True
+
+def test_asset_management_company_parses_to_investment_firm(): # "asset management company NL" misparsed to
+    # ucits_manco because the bare "management company" rule matched before the asset-manager rule.
+    assert check.parse_claim("asset management company NL")["type"] == "investment_firm"
+    # neighbours that must NOT change
+    assert check.parse_claim("UCITS management company Luxembourg")["type"] == "ucits_manco"
+    assert check.parse_claim("fund management company IE")["type"] == "fund_manager"
+    assert check.parse_claim("beheerder beleggingsinstelling")["type"] == "other"
+
+
+def test_more_claim_wordings_map_to_canonical_types(): # 0.1.29: NL/DE/FR/EN wordings that came back other/wrong
+    for text, ty in (
+            # portfolio / wealth management = MiFID investment firm
+            ("vermogensbeheerder NL", "investment_firm"), ("vermogensbeheer", "investment_firm"),
+            ("Vermögensverwalter DE", "investment_firm"), ("Finanzportfolioverwaltung DE", "investment_firm"),
+            ("wealth manager", "investment_firm"), ("wealth management firm NL", "investment_firm"),
+            ("wealth management company LU", "investment_firm"),  # was ucits_manco via bare "management company"
+            # UCITS management company in DE (OGAW), NL (ICBE), FR (OPCVM)
+            ("OGAW-Verwaltungsgesellschaft DE", "ucits_manco"), ("OGAW-Kapitalverwaltungsgesellschaft", "ucits_manco"),
+            ("beheerder icbe", "ucits_manco"), ("beheerder van een ICBE NL", "ucits_manco"),
+            ("gestionnaire d'OPCVM FR", "ucits_manco"),
+            # insurance distribution (not covered) -- "insurance broker" used to read as a MiFID broker
+            ("insurance broker NL", "insurance_intermediary"), ("insurance intermediary", "insurance_intermediary"),
+            ("insurance agent", "insurance_intermediary"), ("verzekeringstussenpersoon", "insurance_intermediary"),
+            ("assurantietussenpersoon NL", "insurance_intermediary"), ("Versicherungsmakler DE", "insurance_intermediary"),
+            ("Versicherungsvermittler", "insurance_intermediary"), ("courtier en assurances FR", "insurance_intermediary"),
+            ("agent général d'assurance", "insurance_intermediary"),
+            # insurers (not covered)
+            ("insurance company", "insurance"), ("verzekeraar NL", "insurance"), ("Versicherungsunternehmen", "insurance"),
+            ("assureur FR", "insurance"), ("compagnie d'assurance", "insurance"), ("entreprise de réassurance", "insurance"),
+            # building / real-estate management is no financial licence (was ucits_manco)
+            ("property management company", "other"), ("vastgoedbeheerder", "other"), ("Hausverwaltung DE", "other"),
+            ("gestion immobilière", "other")):
+        assert check.parse_claim(text)["type"] == ty, (text, check.parse_claim(text)["type"])
+    # neighbours that must not move
+    for text, ty in (("asset management company NL", "investment_firm"), ("asset manager", "investment_firm"),
+                     ("broker NL", "investment_firm"), ("UCITS management company LU", "ucits_manco"),
+                     ("management company", "ucits_manco"), ("société de gestion d'OPCVM", "sgp"),
+                     ("real estate fund manager", "fund_manager"), ("Kapitalverwaltungsgesellschaft", "fund_manager"),
+                     ("AIFM NL", "aifm"), ("bank", "bank"), ("verzekeringsmaatschappij", "insurance"),
+                     ("beheerder beleggingsinstelling", "other")):
+        assert check.parse_claim(text)["type"] == ty, (text, check.parse_claim(text)["type"])
+    # an insurance claim is not_covered (it no longer goes to the MiFID register as "broker")
+    r = run({"name": "Example Investment Firm B.V.", "country": "NL", "claimed_licence": "insurance broker NL"})
+    assert r["claimed_licence"]["type"] == "insurance_intermediary" and r["claimed_licence"]["covered"] is False
+    assert r["verdict"] == "REVIEW"
+    # "wealth manager" / "vermogensbeheerder" are soft wordings like "asset manager": an AIFM-only firm stays ALLOW
+    # with matched_as shown; a real MiFID firm is a plain ALLOW
+    for text in ("wealth manager NL", "vermogensbeheerder NL"):
+        r = run({"name": "Example Fund Management B.V.", "country": "NL", "claimed_licence": text})
+        assert r["claimed_licence"]["matched_as"] == ["AIFM"] and r["verdict"] == "ALLOW", (text, r["reasons"])
+        r = run({"name": "Example Investment Firm B.V.", "country": "NL", "claimed_licence": text})
+        assert r["claimed_licence"]["found_active"] is True and "matched_as" not in r["claimed_licence"]
+        assert r["verdict"] == "ALLOW", (text, r["reasons"])
+    # a UCITS ManCo wording finds the UCITS-only fixture; the AIFM-only one is not a UCITS ManCo
+    r = run({"name": "Example UCITS Manco S.A.", "country": "LU", "claimed_licence": "OGAW-Verwaltungsgesellschaft LU"})
+    assert r["claimed_licence"]["type"] == "ucits_manco" and r["claimed_licence"]["found_active"] is True
+    r = run({"name": "Example Fund Management B.V.", "country": "NL", "claimed_licence": "beheerder icbe NL"})
+    assert r["claimed_licence"]["found"] is False and r["verdict"] == "REVIEW"
+
+
+def test_lei_pending_archival_is_a_note_only(): # 0.1.29: PENDING_ARCHIVAL / PENDING_TRANSFER LEIs (being moved to
+    # another LEI issuer) get a plain note; the verdict stays as it was
+    for st in ("PENDING_ARCHIVAL", "PENDING_TRANSFER"):
+        snap = check.LEI.Snapshot.parse(SNAP_LINES[:1] + [f"L\t724500MX2WBKDJP9HE56\tBitvavo B.V.\tNL\t{st}\tACTIVE\t\t\t"])
+        for q in ({"lei": "724500MX2WBKDJP9HE56"}, {"name": "Bitvavo B.V."},
+                  {"name": "Bitvavo B.V.", "claimed_licence": "crypto NL"}):
+            r = run(q, lei_snap=snap)
+            base = run(q, lei_snap=check.LEI.Snapshot.parse(
+                SNAP_LINES[:1] + ["L\t724500MX2WBKDJP9HE56\tBitvavo B.V.\tNL\tISSUED\tACTIVE\t\t\t"]))
+            assert r["verdict"] == base["verdict"] == "ALLOW" and r["reasons"] == base["reasons"], (st, q, r["reasons"])
+            o = next(x for x in r["licences"] if x.get("lei") == "724500MX2WBKDJP9HE56")
+            assert o["lei_status"] == st
+            ns = [n for n in r["notes"] if n.startswith("lei_pending_transfer")]
+            assert len(ns) == 1 and st in ns[0] and "stays valid" in ns[0], (st, q, r["notes"])
+            assert not any(n.startswith("lei_pending_transfer") for n in base["notes"])
+    # entry LEI differing from the section's LEI: one note per LEI, branch (parent_lei) entries left out
+    ns = check.LEI.licence_notes([{"name": "A", "lei": "X" * 20, "lei_status": "PENDING_ARCHIVAL"},
+                                  {"name": "A2", "lei": "X" * 20, "lei_status": "PENDING_ARCHIVAL"},
+                                  {"name": "B", "lei": "Y" * 20, "lei_status": "ISSUED"},
+                                  {"name": "C", "lei": "Z" * 20, "lei_status": "PENDING_TRANSFER"},
+                                  {"name": "D", "lei": "W" * 20, "lei_status": "PENDING_ARCHIVAL",
+                                   "match": {"method": "parent_lei"}}], "Z" * 20)
+    assert len(ns) == 1 and "'A'" in ns[0] and "X" * 20 in ns[0]
+
+
+def test_emi_only_payment_institution_claim_is_review(): # Mollie B.V. NL
+    # Mollie's active EBA PSD entry is an EMI; its PI entry is WITHDRAWN (not just absent). A generic "payment
+    # institution" claim must find it (same EBA PSD register) but flag the type mismatch: matched_as, REVIEW
+    # (never ALLOW -- unlike investment_firm, there is no soft wording that keeps this one ALLOW). 0.1.26:
+    # because the strict PI entry is withdrawn (not merely never-granted), the reason must say so (status +
+    # withdrawal date), not just "found only as EMI" -- the same logic as the investment_firm case below.
+    r = run({"name": "Mollie B.V.", "country": "NL", "claimed_licence": "payment institution NL"})
+    assert r["claimed_licence"]["type"] == "payment_institution"
+    assert r["claimed_licence"]["covered"] is True and r["claimed_licence"]["found_active"] is True
+    assert r["claimed_licence"]["matched_as"] == ["Electronic money institution"]
+    assert r["verdict"] == "REVIEW"
+    assert any("its payment institution entry is withdrawn" in x and "active only as Electronic money institution" in x
+               for x in r["reasons"])
+    # a precise "emi" claim on the same firm is unaffected (own, narrower type)
+    r = run({"name": "Mollie B.V.", "country": "NL", "claimed_licence": "e-money institution NL"})
+    assert r["claimed_licence"]["type"] == "emi" and r["claimed_licence"]["found_active"] is True
+    assert "matched_as" not in (r["claimed_licence"] or {})
+
+
+def test_withdrawn_strict_entry_with_active_sibling_is_review(): # 0.1.26: Providence Capital N.V. NL etc.
+    # A firm whose strict "Investment firm" entry is WITHDRAWN but which also holds an ACTIVE AIFM authorisation
+    # must not read as plain ALLOW on soft wording ("asset manager NL") -- 0.1.25 hid the withdrawn MiFID licence
+    # behind matched_as + a plain note. The withdrawn strict entry must now force REVIEW (soft wording no longer
+    # saves it) and the reason must name the strict entry's status + withdrawal date and the active sibling type.
+    r = run({"name": "Example Lapsed Fund Management B.V.", "country": "NL", "claimed_licence": "asset manager NL"})
+    assert r["claimed_licence"]["type"] == "investment_firm" and r["claimed_licence"]["found_active"] is True
+    assert r["claimed_licence"]["matched_as"] == ["AIFM"]
+    assert r["verdict"] == "REVIEW"
+    assert any("its MiFID investment firm entry is withdrawn" in x and "withdrawn 2020-06-15" in x
+               and "active only as AIFM" in x for x in r["reasons"])
+    # same firm, hard-worded claim: was already REVIEW before this fix, stays REVIEW with the same withdrawn reason
+    r = run({"name": "Example Lapsed Fund Management B.V.", "country": "NL", "claimed_licence": "investment firm NL"})
+    assert r["claimed_licence"]["matched_as"] == ["AIFM"] and r["verdict"] == "REVIEW"
+    assert any("its MiFID investment firm entry is withdrawn" in x for x in r["reasons"])
+    # a firm with only a withdrawn sibling entry and no strict entry at all (nothing active anywhere): matched_as
+    # is now filled in too, instead of reading as a plain not-found/"not active" with no detail.
+    r = run({"name": "Example Lapsed AIFM Only B.V.", "country": "NL", "claimed_licence": "investment firm NL"})
+    assert r["claimed_licence"]["found"] is True and r["claimed_licence"]["found_active"] is False
+    assert r["claimed_licence"]["matched_as"] == ["AIFM"]
+    assert r["verdict"] == "REVIEW"
+
+
 def test_as_of_uses_register_dates():
     r = run({"name": "Mollie B.V.", "claimed_licence": "payment institution", "as_of": "2022-06-01"})
     pi = next(l for l in r["licences"] if l["type"] == "Payment institution")
@@ -371,8 +580,80 @@ def test_lei_kvk_lapsed_with_claim_is_review_never_block():
     assert s["registration_status"] == "LAPSED" and s["lapsed_on"] == "2026-10-21" and s["kvk"] == "30204462"
     assert r["status"] == "licensed" and any(l["name"] == "Mollie B.V." for l in r["licences"])  # found via KVK LEI
     assert r["verdict"] == "REVIEW" and any(x.startswith("lei_lapsed") for x in r["reasons"])
-    r = run({"kvk": "3020 4462", "name": "Mollie B.V."}, lei_snap=SNAP)  # no claim: note only
-    assert r["verdict"] == "ALLOW" and any(x.startswith("lei_lapsed") for x in r["notes"])
+    # no claim, but the KVK LEI is the licensed firm's: REVIEW since 0.1.22 (was a note)
+    r = run({"kvk": "3020 4462", "name": "Mollie B.V."}, lei_snap=SNAP)
+    assert r["verdict"] == "REVIEW" and any(x.startswith("lei_lapsed") for x in r["reasons"])
+    assert r["status"] == "licensed" and not any(x.startswith("lei_lapsed") for x in r["notes"])
+
+
+def test_lei_status_per_licence_review_never_block():
+    """Each matched register entry carries its own LEI's lei_status (+ successor_lei); a LAPSED or RETIRED
+    LEI on an authorised firm gives REVIEW with a plain reason, without a claimed_licence, never BLOCK."""
+    r = run({"lei": "724500MX2WBKDJP9HE56"}, lei_snap=SNAP)  # Bitvavo's entry, LEI LAPSED in SNAP
+    o = r["licences"][0]
+    assert o["lei"] == "724500MX2WBKDJP9HE56" and o["lei_status"] == "LAPSED" and "successor_lei" not in o
+    assert r["verdict"] == "REVIEW" and r["status"] == "licensed"
+    rs = [x for x in r["reasons"] if x.startswith("lei_lapsed")]
+    assert len(rs) == 1 and "does not mean the licence was withdrawn" in rs[0]
+    assert run({"name": "Bitvavo B.V."}, lei_snap=SNAP)["verdict"] == "REVIEW"  # register LEI, found by name
+    # ISSUED: unchanged ALLOW, lei_status shown
+    ok = check.LEI.Snapshot.parse(SNAP_LINES[:1] + ["L\t724500MX2WBKDJP9HE56\tBitvavo B.V.\tNL\tISSUED\tACTIVE\t\t\t"])
+    r = run({"lei": "724500MX2WBKDJP9HE56"}, lei_snap=ok)
+    assert r["verdict"] == "ALLOW" and r["licences"][0]["lei_status"] == "ISSUED"
+    # RETIRED with successor: on the entry and in the reason
+    ret = check.LEI.Snapshot.parse(SNAP_LINES[:1] + [
+        "L\t724500MX2WBKDJP9HE56\tBitvavo B.V.\tNL\tRETIRED\tINACTIVE\t529900T8BM49AURSDO55\t\t"])
+    r = run({"name": "Bitvavo B.V."}, lei_snap=ret)
+    o = next(x for x in r["licences"] if x.get("lei") == "724500MX2WBKDJP9HE56")
+    assert o["lei_status"] == "RETIRED" and o["successor_lei"] == "529900T8BM49AURSDO55"
+    rs = [x for x in r["reasons"] if x.startswith("lei_inactive")]
+    assert r["verdict"] == "REVIEW" and len(rs) == 1 and "successor LEI 529900T8BM49AURSDO55" in rs[0]
+    assert "merged" in rs[0]
+    # no snapshot in this run: lei_status null, verdict untouched
+    r = run({"lei": "724500MX2WBKDJP9HE56"})
+    assert r["licences"][0]["lei_status"] is None and r["verdict"] == "ALLOW"
+    # entry LEI differs from the section's LEI: its own reason, once
+    two = check.LEI.licence_reasons([{"name": "A", "lei": "X" * 20, "lei_status": "LAPSED"},
+                                     {"name": "A2", "lei": "X" * 20, "lei_status": "LAPSED"},
+                                     {"name": "B", "lei": "Y" * 20, "lei_status": "ISSUED"},
+                                     {"name": "C", "lei": "Z" * 20, "lei_status": "LAPSED"}], "Z" * 20)
+    assert len(two) == 1 and "register entry 'A'" in two[0]
+    assert "carries LEI XXXXXXXXXXXXXXXXXXXX, which is LAPSED at GLEIF" in two[0]  # lapsed-LEI wording
+    json.dumps(r)
+
+
+def test_licence_reasons_skip_branch_self_successor_hidden():
+    """A branch matched only via parent_lei, an entry whose successor LEI is the queried firm, and entries cut
+    by the 5-entry cap never trigger the per-entry LEI nudge; same-name duplicate / lapsed entries still do."""
+    R = check.LEI.licence_reasons
+    q = "5299007QVIQ7IO64NX37"  # UBS Europe SE (queried, ISSUED)
+    # a retired branch whose successor IS the queried firm (UBS Europe SE case)
+    selfsucc = {"name": "UBS Europe SE, Luxembourg Branch", "lei": "B" * 20, "lei_status": "RETIRED",
+                "successor_lei": q, "match": {"method": "lei", "confidence": 1.0}}
+    assert R([selfsucc], q, queried=q) == []
+    assert R([selfsucc], None, queried=q) == [] and R([selfsucc], q) == []
+    # a branch matched only via the parent LEI (HSBC/Nordea branches): its own LAPSED LEI is not judged
+    branch = {"name": "Some Bank, Branch", "lei": "C" * 20, "lei_status": "LAPSED",
+              "match": {"method": "parent_lei", "confidence": 0.9}}
+    assert R([branch], q, queried=q) == []
+    # a same-name entry found by name that carries an old DUPLICATE LEI whose successor is the firm: still REVIEW
+    dup = {"name": "Newrails, UAB", "lei": "G" * 20, "lei_status": "DUPLICATE", "successor_lei": q,
+           "match": {"method": "exact_name", "confidence": 0.95}}
+    assert len(R([dup], q, queried=q)) == 1
+    # entry not in the shown (capped) list: not judged; shown: judged
+    other = {"name": "Newrails UAB", "lei": "D" * 20, "lei_status": "DUPLICATE",
+             "match": {"method": "name", "confidence": 1.0}}
+    assert R([other], q, shown=[selfsucc]) == []
+    rs = R([other], q, shown=[other])
+    assert len(rs) == 1 and "'Newrails UAB' carries LEI DDDDDDDDDDDDDDDDDDDD, which is DUPLICATE" in rs[0]
+    # a lapsed entry found by name still REVIEWs (Cryptonow GmbH case)
+    lapsed = {"name": "Cryptonow GmbH", "lei": "E" * 20, "lei_status": "LAPSED",
+              "match": {"method": "name", "confidence": 1.0}}
+    rs = R([lapsed], None, shown=[lapsed])
+    assert len(rs) == 1 and rs[0].startswith("lei_lapsed: the register entry 'Cryptonow GmbH'")
+    # successor elsewhere: still judged
+    moved = dict(selfsucc, successor_lei="F" * 20)
+    assert len(R([moved], q, queried=q)) == 1
 
 
 def test_lei_from_register_and_unknown_kvk():
@@ -541,6 +822,124 @@ def test_amf_new_sources_in_recorder_index_and_live():
     for s in ("amf_sgp", "amf_biens_divers"):
         assert S.SOURCES[s]["recorder"] == "nca-lists" and "Licence Ouverte" in S.SOURCES[s]["licence"]
         assert ("nca-lists", s) in index.FILE_SOURCES and s in live.AMF_DATASETS
+
+
+# ------------------------------------------------------------------------------------------------ IOSCO I-SCAN
+def test_iscan_parser():
+    recs = {r["key"]: r for r in S.iscan_records(json.loads(fx("iscan.json")))}
+    lky = recs["57946"]
+    assert lky["name"] == "LKY" and lky["country"] == "CA" and lky["kind"] == "warning"
+    assert lky["domains"] == ["lkyexch.com", "mail.lkygg.com"]  # e-mail kept as its domain only
+    assert "via IOSCO I-SCAN" in lky["authority"] and lky["detail_url"].startswith("https://lautorite.qc.ca")
+    vt = recs["55013"]  # several names packed with ';', websites only in other_urls
+    assert vt["name"] == "VT Markets" and "VT Markets Limited" in vt["names"] and "vtmarkets.com" in vt["domains"]
+    du = recs["56420"]  # Danish FSA: prefix stripped; the regulator's own page is not the firm's domain
+    assert du["name"] == "DUFOURBIT PTY LTD" and du["domains"] == [] and du["country"] == "DK"
+    fb = recs["57934"]  # a facebook.com URL never becomes a match key
+    assert fb["domains"] == []
+    assert "55913" not in recs  # only a gmail address: nothing safe to match on
+    assert recs["57717"]["category"].startswith("clone") and recs["57717"]["domains"] == ["universalstocktrading.com"]
+    assert recs["57917"]["category"].startswith("clone")  # IOSCO category 2: impersonator
+
+
+def test_iscan_domain_block_and_freemail_safe():
+    r = run({"name": "Some Exchange", "domain": "https://lkyexch.com/login"})
+    assert r["verdict"] == "BLOCK" and any(w["source"] == "iosco_iscan" for w in r["warnings"])
+    assert any("IOSCO I-SCAN" in a for a in r["attribution"])
+    r = run({"name": "Anything Ltd", "email": "someone@gmail.com"})
+    assert not any(w["source"] == "iosco_iscan" for w in r["warnings"])
+    r = run({"name": "My Page", "domain": "facebook.com"})
+    assert not any(w["source"] == "iosco_iscan" for w in r["warnings"])
+
+
+def test_iscan_exact_name_block_but_no_fuzzy():
+    r = run({"name": "VT Markets Limited"})
+    assert any(w["source"] == "iosco_iscan" and w["match"]["confidence"] >= check.STRONG for w in r["warnings"])
+    r = run({"name": "Walter Rodgers"})  # name inside a warning about a fake Facebook page: no fuzzy hit
+    assert not any(w["source"] == "iosco_iscan" for w in r["warnings"])
+
+
+def test_iscan_not_refreshed_live_and_covered():
+    assert S.SOURCES["iosco_iscan"]["live"] is False
+    assert not any("I-SCAN" in k and "BaFin" not in k for k in S.NOT_COVERED)
+    ix = make_index(as_of_ts="2026-10-20T08:00:00+00:00")
+    asked = []
+
+    def get(url, params=None, timeout=60):
+        asked.append(url)
+        raise RuntimeError("offline")
+    failed = actor.refresh(ix, [], "auto", 48, get, now=dt.datetime(2026, 10, 28, tzinfo=dt.timezone.utc))
+    assert "iosco_iscan" not in failed and not any("iosco" in u for u in asked)
+
+
+def test_warning_on_register_confirmed_domain_is_review():
+    """A warning listing the domain that the register confirms for an authorised firm (old warning, or a
+    one-country warning on a passported firm) gives REVIEW / licensed_and_warned, not BLOCK."""
+    lic = [r for r in IX.records if r["kind"] == "licence" and r.get("domains") and r.get("status") == "active"][0]
+    w = S._rec("iosco_iscan", "x1", name="https://" + lic["domains"][0], domains=[lic["domains"][0]],
+               country="ES", authority="CNMV (Spain) via IOSCO I-SCAN", status="listed", date="2022-04-04")
+    w["history"] = {"first_seen": "2026-10-27", "events": []}
+    ix = make_index(fixture_records() + [w])
+    r = run({"name": lic["name"], "domain": lic["domains"][0], "country": lic.get("country")}, ix=ix)
+    assert r["verdict"] == "REVIEW" and r["status"] == "licensed_and_warned", (r["verdict"], r["status"])
+    assert any(x.startswith("licensed_and_warned:") for x in r["reasons"])
+    r = run({"name": "Unrelated Firm", "domain": lic["domains"][0]}, ix=make_index(
+        [x for x in fixture_records() if x["kind"] != "licence"] + [w]))
+    assert r["verdict"] == "BLOCK"  # no authorised firm confirms the domain: still blocked
+
+
+def test_freemail_never_warned_any_source():
+    """Live bug found 2026-11-06: AMF blacklist e-mails reduced to 'gmail.com' made every gmail user BLOCK."""
+    b = ('"nom";"categorie";"date_inscription"\n"fraud.person@gmail.com";"crypto";"2024-12-18"\n'
+         '"Scam Capital / scamcap.com / x@gmail.com";"forex";"2025-01-02"\n').encode()
+    recs = S.amf_blacklist_records(b)
+    assert len(recs) == 1 and recs[0]["domains"] == ["scamcap.com"]
+    ix = make_index(fixture_records() + [dict(r, history={"first_seen": "2026-10-27", "events": []}) for r in recs])
+    r = run({"name": "Anything Ltd", "email": "someone@gmail.com"}, ix=ix)
+    assert r["verdict"] != "BLOCK" and not r["warnings"], r["reasons"]
+
+
+def test_second_level_registries():
+    assert N.registered_domain("scam.com.mx") == "scam.com.mx" and N.registered_domain("x.it.com") == "x.it.com"
+
+
+
+def test_claim_mortgage_and_real_estate_broker_not_mifid():
+    # "mortgage broker" / "real estate broker" used to read as a MiFID investment firm (bare "broker" wording)
+    for text, ty in (
+            # mortgage / credit intermediaries: national (MCD / CCD) -> consumer_credit, not covered (EN/NL/DE/FR)
+            ("mortgage broker", "consumer_credit"), ("mortgage broker NL", "consumer_credit"),
+            ("credit broker", "consumer_credit"), ("loan broker", "consumer_credit"),
+            ("hypotheekadviseur NL", "consumer_credit"), ("hypotheekbemiddelaar", "consumer_credit"),
+            ("Immobiliardarlehensvermittler DE", "consumer_credit"), ("Kreditvermittler", "consumer_credit"),
+            ("courtier en crédit immobilier FR", "consumer_credit"), ("intermédiaire en crédit", "consumer_credit"),
+            # estate agents: no financial licence -> other (EN/NL/DE/FR)
+            ("real estate broker", "other"), ("real estate broker NL", "other"), ("property broker", "other"),
+            ("makelaar NL", "other"), ("Immobilienmakler DE", "other"), ("agent immobilier FR", "other"),
+            # a claim ending in "bank" stays a bank claim ahead of the wealth/asset wording
+            ("private wealth management bank", "bank"), ("private wealth management bank NL", "bank"),
+            ("wealth management bank", "bank"), ("mortgage bank", "bank"), ("hypotheekbank", "bank")):
+        assert check.parse_claim(text)["type"] == ty, (text, check.parse_claim(text)["type"])
+    # neighbours that must not move
+    for text, ty in (("broker NL", "investment_firm"), ("stock broker", "investment_firm"),
+                     ("broker-dealer", "investment_firm"), ("wealth manager", "investment_firm"),
+                     ("insurance broker NL", "insurance_intermediary"), ("investment bank", "bank"),
+                     ("credit institution", "bank"), ("établissement de crédit", "bank"),
+                     ("mortgage lender", "consumer_credit"), ("makelaar in hypotheken", "consumer_credit"),
+                     ("payment institution", "payment_institution"), ("real estate fund manager", "fund_manager"),
+                     ("property management company", "other")):
+        assert check.parse_claim(text)["type"] == ty, (text, check.parse_claim(text)["type"])
+    # "beursmakelaar" (NL stockbroker) is MiFID; the other makelaar wordings keep their own types
+    for text, ty in (("beursmakelaar", "investment_firm"), ("beursmakelaar NL", "investment_firm"),
+                     ("makelaar", "other"), ("makelaar NL", "other"), ("vastgoedmakelaar", "other"),
+                     ("hypotheekmakelaar", "consumer_credit"), ("makelaar in hypotheken", "consumer_credit"),
+                     ("assurantiemakelaar", "insurance_intermediary"), ("verzekeringsmakelaar", "insurance_intermediary")):
+        assert check.parse_claim(text)["type"] == ty, (text, check.parse_claim(text)["type"])
+    assert check.parse_claim("beursmakelaar NL")["country"] == "NL"
+    # end to end: a mortgage-broker claim is not_covered (no longer checked against the MiFID register)
+    for text in ("mortgage broker NL", "real estate broker NL"):
+        r = run({"name": "Example Investment Firm B.V.", "country": "NL", "claimed_licence": text})
+        assert r["claimed_licence"]["covered"] is False and r["verdict"] == "REVIEW", (text, r["reasons"])
 
 
 if __name__ == "__main__":

@@ -225,9 +225,51 @@ def section(*, snap: Snapshot | None, q: dict, register_lei: str | None, gleif_i
     return out
 
 
+INACTIVE = ("RETIRED", "ANNULLED", "DUPLICATE", "MERGED")
+# GLEIF statuses of an LEI that is being moved from one LEI issuer (LOU) to another: the LEI stays valid. Shown as a
+# plain note so a buyer does not read the unfamiliar status as a problem; never changes the verdict.
+PENDING = ("PENDING_ARCHIVAL", "PENDING_TRANSFER")
+
+
+def licence_fields(snap: Snapshot | None, lei: str | None) -> dict:
+    """-> {"lei_status", "successor_lei"} for one matched register entry's own LEI, from the baked snapshot (which
+    holds every LEI found in our registers). lei_status None = no LEI data in this run."""
+    rec = snap.record(lei) if snap and lei else None
+    if not rec:
+        return {"lei_status": None}
+    out = {"lei_status": rec["registration_status"]}
+    if rec["successor_lei"]:
+        out["successor_lei"] = rec["successor_lei"]
+    return out
+
+
+def _lapsed_msg(lei: str, when: str, review: bool, who: str = "") -> str:
+    msg = f"lei_lapsed: {who}LEI {lei}{', which' if who else ''} is LAPSED at GLEIF{when}"
+    if review:
+        msg += (": the firm did not renew its LEI. This alone does not mean the licence was withdrawn, but a "
+                "licensed firm normally keeps its LEI current; ask the firm or check the register")
+    return msg
+
+
+def _inactive_msg(lei: str, status: str, successor: str | None, review: bool, who: str = "") -> str:
+    msg = f"lei_inactive: {who}LEI {lei}{', which' if who else ''} is {status} at GLEIF" + (f", successor LEI {successor}" if successor else "")
+    if review:
+        msg += ("; the firm may have merged into another firm or closed while the register still lists it: check "
+                "which firm you deal with and whether the licence moved" + (" to the successor" if successor else ""))
+    return msg
+
+
+def _pending_msg(lei: str, status: str, who: str = "") -> str:
+    return (f"lei_pending_transfer: {who}LEI {lei}{', which' if who else ''} is {status} at GLEIF: the LEI is being "
+            "moved to another LEI issuer (LOU) and stays valid; this says nothing about the licence and does not "
+            "change the verdict")
+
+
 def verdict_effects(sec: dict | None, *, claims_licence: bool) -> tuple[list[str], list[str]]:
-    """-> (reasons that make the verdict REVIEW, notes). Never BLOCK: about 35% of all LEIs are lapsed, and a lapsed
-    LEI means the yearly data renewal was missed, not that the firm lost a licence."""
+    """-> (reasons that make the verdict REVIEW, notes). claims_licence: you gave a claimed_licence, or this LEI is the
+    one of a matched authorised register entry (then the LEI status is about a licensed firm). Never BLOCK: about 35%
+    of all LEIs are lapsed (3.2% of licensed EU financial firms'), and a lapsed LEI means the yearly data
+    renewal was missed, not that the firm lost a licence."""
     reasons, notes = [], []
     if not sec or not sec.get("lei"):
         if sec and sec.get("note"):
@@ -237,16 +279,12 @@ def verdict_effects(sec: dict | None, *, claims_licence: bool) -> tuple[list[str
     when = f" (recorded {sec['lapsed_on']})" if sec.get("lapsed_on") else (
         f" (renewal was due {sec['next_renewal']})" if sec.get("next_renewal") else "")
     if rs == "LAPSED":
-        msg = f"lei_lapsed: LEI {lei} registration status is LAPSED{when}"
-        if claims_licence:
-            reasons.append(msg + "; a licensed firm normally keeps its LEI renewed, ask the firm or check the register")
-        else:
-            notes.append(msg)
-    elif rs in ("RETIRED", "ANNULLED", "DUPLICATE", "MERGED") or es == "INACTIVE":
-        msg = (f"lei_inactive: LEI {lei} is {rs or es}" + (f", successor LEI {sec['successor_lei']}"
-                                                            if sec.get("successor_lei") else ""))
-        (reasons if claims_licence else notes).append(msg + ("; the firm may have merged or been dissolved"
-                                                             if claims_licence else ""))
+        (reasons if claims_licence else notes).append(_lapsed_msg(lei, when, claims_licence))
+    elif rs in INACTIVE or es == "INACTIVE":
+        (reasons if claims_licence else notes).append(
+            _inactive_msg(lei, rs if rs in INACTIVE else es, sec.get("successor_lei"), claims_licence))
+    elif rs in PENDING:
+        notes.append(_pending_msg(lei, rs))
     elif sec.get("successor_lei"):
         notes.append(f"LEI {lei} names successor LEI {sec['successor_lei']}")
     if sec.get("renamed_on"):
@@ -257,6 +295,52 @@ def verdict_effects(sec: dict | None, *, claims_licence: bool) -> tuple[list[str
     if sec.get("lei_source") in ("unavailable", "not_in_snapshot") and sec.get("lei_from") == "input":
         notes.append(f"LEI {lei}: status not checked ({sec['lei_source']})")
     return reasons, notes
+
+
+def licence_reasons(active: list[dict], skip: str | None, shown: list[dict] | None = None,
+                    queried: str | None = None) -> list[str]:
+    """REVIEW reasons for authorised register entries whose own LEI (lei_status from licence_fields) is LAPSED or
+    RETIRED etc., other than the LEI already judged in the lei section (`skip`). One reason per LEI. Not judged
+    here: entries matched only through a parent LEI (a branch's own LEI says nothing about the firm you asked
+    for), entries found through the LEI link whose successor LEI is the LEI you asked for / the lei section's LEI
+    (the firm itself), and entries not shown in the output (`shown`, the capped licences list). An entry found by
+    name that still carries an old duplicate/lapsed LEI keeps its REVIEW (Newrails UAB)."""
+    out, seen = [], {skip}
+    selves = {x for x in (skip, queried) if x}
+    shown_ids = None if shown is None else {id(o) for o in shown}
+    for o in active:
+        lei, st = o.get("lei"), o.get("lei_status")
+        if not lei or lei in seen or not st:
+            continue
+        how = (o.get("match") or {}).get("method")
+        if how == "parent_lei":
+            continue
+        if shown_ids is not None and id(o) not in shown_ids:
+            continue
+        if o.get("successor_lei") in selves and how in ("lei", "parent_lei"):
+            continue  # found through the LEI link and retired into the firm itself (UBS Europe SE branches)
+        seen.add(lei)
+        who = f"the register entry '{o['name']}' carries "
+        if st == "LAPSED":
+            out.append(_lapsed_msg(lei, "", True, who))
+        elif st in INACTIVE:
+            out.append(_inactive_msg(lei, st, o.get("successor_lei"), True, who))
+    return out
+
+
+def licence_notes(entries: list[dict], skip: str | None) -> list[str]:
+    """Notes for shown register entries whose own LEI is PENDING_ARCHIVAL / PENDING_TRANSFER at GLEIF (an LEI moving
+    to another issuer, still valid), other than the LEI already described in the lei section (`skip`). One note per
+    LEI. Informative only: the verdict is not touched. Entries matched only through a parent LEI are left out, as in
+    licence_reasons."""
+    out, seen = [], {skip}
+    for o in entries:
+        lei, st = o.get("lei"), o.get("lei_status")
+        if not lei or lei in seen or st not in PENDING or (o.get("match") or {}).get("method") == "parent_lei":
+            continue
+        seen.add(lei)
+        out.append(_pending_msg(lei, st, f"the register entry '{o['name']}' carries "))
+    return out
 
 
 MISMATCH = 0.5

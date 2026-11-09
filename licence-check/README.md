@@ -6,8 +6,10 @@ Before you pay, deposit with, invest through or onboard a financial firm or cryp
 **is it authorised in the EU, and is it on a regulator's warning list?**
 
 This Actor checks a firm by name, LEI, registration number and/or website against the EU-level public registers
-(ESMA, EBA, ECB, the MiCA register) and national warning lists (France, Belgium, the Netherlands, plus the EU-wide
-MiCA list of non-compliant crypto firms). It returns a verdict, **ALLOW**, **REVIEW** or **BLOCK**, with the reasons,
+(ESMA, EBA, ECB, the MiCA register) and regulators' warning lists: about 48,000 investor warnings from 100+
+securities regulators worldwide via IOSCO I-SCAN (BaFin, CNMV, CONSOB, Central Bank of Ireland, FCA, FINMA, ASIC,
+SEC and more), the national lists of France, Belgium and the Netherlands, and the EU-wide MiCA list of non-compliant
+crypto firms. It returns a verdict, **ALLOW**, **REVIEW** or **BLOCK**, with the reasons,
 the matching register entries (what the firm is authorised for, since when, withdrawn when, where it is passported),
 and for every source the date of the data used.
 
@@ -21,10 +23,10 @@ replace a compliance officer. **Not legal advice**, not investment advice: see "
 | `verdict` | `ALLOW` (active authorisation found, nothing against it), `REVIEW` (a human checks first), `BLOCK` (warning list or EU sanctions hit) |
 | `status` | `licensed`, `licensed_and_warned`, `warned`, `sanctioned`, `licence_withdrawn`, `registered_offer` (only an AMF biens-divers offer registration matched, see Coverage), `possible_match`, `not_found`, `not_covered` |
 | `reasons` | One line per rule that fired |
-| `licences` | Up to 5 register entries: register, authority, type, status, `authorised_since`, `withdrawn_on`, `passported_to`, services, match method and confidence, history |
+| `licences` | Up to 5 register entries: register, authority, type, status, `authorised_since`, `withdrawn_on`, `passported_to`, services, match method and confidence, history; for an entry with an LEI also `lei_status` (GLEIF registration status of that LEI) and `successor_lei` when GLEIF names one |
 | `warnings`, `sanctions` | Up to 5 warning-list / EU-sanctions entries that match, with date and match confidence |
 | `lookalike_domains` | Warning-list websites that look like yours (one character off, or same name on another extension). Shown, not counted as a match |
-| `claimed_licence` | Whether the licence the firm claims is `covered` by our sources and `found` (active) |
+| `claimed_licence` | Whether the licence the firm claims is `covered` by our sources and `found` (active); when only a sibling licence type matches (AIFM/UCITS ManCo for an `investment_firm` claim, EMI for a `payment_institution` claim), also `matched_as` (the type actually held) and a plain `note` |
 | `coverage` | Per source: checked / stale / unavailable, and `data_as_of` |
 | `history` | When our daily records first saw the entry and what changed since |
 | `lei` | LEI status from GLEIF (see below); `null` when no LEI is known for the firm and none was searched for. If you search by KVK number and none is on file, `lei` is an object with `found: false` |
@@ -48,9 +50,25 @@ Give at least one of `name`, `lei`, `reg_number`, `domain`. Batch: `{"entities":
 
 - `claimed_licence`: free text ("payment institution NL", "MiCA CASP", "bank") or `{"type": "emi", "country": "NL"}`.
   Types: `bank`, `payment_institution`, `emi`, `aisp`, `pisp`, `investment_firm`, `aifm`, `ucits_manco`,
+  `fund_manager` (either an AIFM or a UCITS management company: "fund manager", "fund management company", "ManCo"),
   `crowdfunding`, `trading_venue`, `casp`, `emt_issuer`, `art_issuer`, `sgp` (French portfolio management company),
-  `biens_divers` (French registered tangible-asset offer). For a French firm, `aifm` and `ucits_manco` are also
-  checked against the AMF list of portfolio management companies.
+  `biens_divers` (French registered tangible-asset offer). For a French firm, `aifm`, `ucits_manco` and
+  `fund_manager` are also checked against the AMF list of portfolio management companies. A generic
+  `investment_firm` claim ("investment firm", "asset manager", "wealth manager", "vermogensbeheerder", "broker"...) also matches an AIFM or UCITS
+  management company entry in the ESMA MiFID register (same register, under its own entityTypeLabel); claim `aifm`
+  or `ucits_manco` directly for a precise match on that type only. A firm that holds only that AIFM/UCITS ManCo authorisation, or (for a generic
+  `payment_institution` claim) only an electronic money institution authorisation, comes back `found`, with
+  `matched_as` (the licence type actually held) and verdict `REVIEW`: these are different EU authorisations from a
+  MiFID investment firm or a payment institution. A claim worded only "asset manager" (or "wealth manager",
+  "vermogensbeheerder", "Vermögensverwalter") may stay `ALLOW` (still
+  showing `matched_as`), since that wording does not promise the precise licence type -- unless the strict licence
+  entry itself was found and withdrawn (not merely absent), which always reads `REVIEW` with the withdrawn entry's
+  status and date given as the reason. UCITS management company wordings in other languages ("OGAW-Verwaltungsgesellschaft",
+  "beheerder van een icbe", "gestionnaire d'OPCVM") read as `ucits_manco`. Insurance wordings ("insurance broker",
+  "verzekeraar", "Versicherungsmakler", "courtier en assurances"), mortgage and credit intermediaries ("mortgage broker",
+  "hypotheekadviseur", "Immobiliardarlehensvermittler", "courtier en crédit immobilier": `consumer_credit`), estate
+  agents ("real estate broker", "makelaar", "Immobilienmakler", "agent immobilier") and property/real-estate
+  management are not covered. A claim that ends in "bank" ("private wealth management bank") reads as `bank`.
 - `as_of`: the status on a past date, from the registers' own authorisation and withdrawal dates where they publish
   them, otherwise from our recorded history. Before our history starts for a register without dates, the answer is
   `unknown` (never a guess).
@@ -75,11 +93,19 @@ register entry (`lei_from`: `input`, `kvk`, `register`). It shows:
 The bundle holds every LEI that appears in our registers, every LEI registered with the Dutch KVK, and every EEA LEI
 that changed in the last 90 days.
 
-What it does to the verdict: a **LAPSED** LEI (or a retired or annulled one) on a firm for which you give a
-`claimed_licence` makes the verdict `REVIEW` (reason `lei_lapsed` or `lei_inactive`). It never makes a `BLOCK` on its
-own: about a third of all LEIs worldwide are lapsed, and a lapsed LEI means the yearly renewal of the LEI data was
-missed, not that a licence was lost. Without a claimed licence, a lapsed LEI, a recent rename or a name that differs
-from GLEIF's is shown in `notes` only.
+Each entry in `licences` that carries an LEI also has `lei_status` (`ISSUED`, `LAPSED`, `RETIRED`, ...) and, when
+GLEIF names one, `successor_lei`, from the same bundled GLEIF data (`null` if that data is not available in the run).
+
+What it does to the verdict: a **LAPSED** LEI, or a retired, annulled, duplicate or merged one, gives `REVIEW`
+(reason `lei_lapsed` or `lei_inactive`, in plain words) when it is the LEI of an authorised firm we matched, or when you
+give a `claimed_licence`. It never makes a `BLOCK` on its own. A lapsed LEI means the firm did not renew its LEI
+data that year, not that a licence was lost: about 3% of the LEIs of currently licensed EU financial firms in our
+registers are lapsed (November 2026). An LEI that is `PENDING_ARCHIVAL` or `PENDING_TRANSFER` at GLEIF is being moved
+to another LEI issuer and stays valid: it gets a plain note (`lei_pending_transfer`) and does not change the verdict. A retired LEI with a successor usually means a merger, while the register may
+still list the old firm; check which firm you deal with. A query by LEI also lists branches found through that
+parent LEI; a branch's own LEI status does not change the verdict. For an LEI that is not linked to a licensed firm we matched,
+and without a claimed licence, a lapsed or retired LEI, a recent rename or a name that differs from GLEIF's is shown
+in `notes` only.
 
 If you give both a `name` and an `lei`, and the name does not resemble any name known for that LEI (GLEIF's legal
 name and other names, names from our rename history, the names of register entries found through that LEI;
@@ -114,7 +140,10 @@ Rules worth knowing:
 
 - **Clones and impersonation.** Fraudsters copy the names of real banks and brokers, and warning lists then carry
   that name too. When a licensed firm's name also appears on a warning list, the result is REVIEW unless you give the
-  domain you deal with and the register confirms it. If your domain is the one on the warning list, it is BLOCK.
+  domain you deal with and the register confirms it. If your domain is the one on the warning list, it is BLOCK,
+  unless the register also confirms that domain for an authorised firm (for example a warning from before the firm
+  was licensed, or a one-country warning on a firm passported from elsewhere): then it is REVIEW with status
+  `licensed_and_warned`, so a human reads the warning.
 - A REVIEW is also given when only an AMF biens-divers offer registration matches, when a licence is withdrawn, when only a similar name matches, when the domain you give
   differs from the domain in the register, when a source could not be read, or when a warning list is more than
   7 days old. ALLOW is never given while a warning list is missing.
@@ -127,7 +156,11 @@ Rules worth knowing:
   still checked against warning lists and sanctions. If you only want the licence status, leave `domain` out; to
   confirm a bank's or payment/e-money institution's website, use the regulator's own register page.
 - Warning lists can name natural persons. We return only the entries that match what you send, and there is no
-  search or bulk export. E-mail addresses on the AMF list are reduced to their domain.
+  search or bulk export. E-mail addresses on the AMF list and in I-SCAN warnings are reduced to their domain, and
+  I-SCAN names are matched exactly (or by their legal core, e.g. "Ltd" vs "Limited"), never by similarity.
+- **Shared platforms are never match keys.** A warning that points at a Facebook page, a Telegram channel, an app
+  store or a free website builder, or lists a free e-mail address, does not make that platform or e-mail provider
+  "warned".
 
 ## Coverage
 
@@ -147,6 +180,7 @@ Warning lists and sanctions:
 
 | Source | Covers | Countries |
 |---|---|---|
+| IOSCO I-SCAN | Investor warnings from 100+ securities regulators (unlicensed firms, clones and impersonators, regulator impersonators, fraud, market manipulation); each warning names the authority that published it and links to its notice | worldwide, incl. DE, ES, IT, IE, AT, LU, PL, SE, PT, MT, CY, GB, CH, US |
 | ESMA interim MiCA register, non-compliant entities | Crypto services offered without MiCA authorisation, reported by every national authority | EU + NO, IS, LI |
 | AMF listes noires | Unauthorised forex, binary options, crypto derivatives, miscellaneous goods schemes, identity theft | FR |
 | FSMA list of companies operating unlawfully | Fraudulent platforms, clones, unauthorised offers | BE |
@@ -166,11 +200,12 @@ Per country, this means:
 | FR | yes | yes | yes, plus AMF portfolio management companies and biens-divers offers | yes, plus PSAN | yes (AMF) |
 | BE | yes | yes | yes | yes | yes (FSMA) |
 | NL | yes | yes | yes | yes | yes (AFM) |
-| Other EU-27 | yes | yes | yes | yes | only the EU-wide MiCA non-compliant list |
-| NO, IS, LI | no | yes | yes | yes | only the EU-wide MiCA non-compliant list |
-| UK, CH, rest of world | no | no | no | no | no |
+| Other EU-27 | yes | yes | yes | yes | the warnings each authority posts to IOSCO I-SCAN, plus the EU-wide MiCA list |
+| NO, IS, LI | no | yes | yes | yes | IOSCO I-SCAN (LI) and the EU-wide MiCA list |
+| UK, CH, rest of world | no | no | no | no | IOSCO I-SCAN warnings (FCA, FINMA, ASIC, SEC, CFTC, ...) |
 
-Not covered yet: IOSCO I-SCAN, BaFin (DE), CONSOB (IT) and CNMV (ES) warnings, the UK FCA, insurance companies and
+Not covered yet: BaFin (DE), CONSOB (IT) and CNMV (ES) warnings that these authorities do not post to I-SCAN, the UK
+FCA register of licensed firms, insurance companies and
 intermediaries, and purely national licences (consumer credit, mortgage advice, trust offices, financial service
 providers registered only nationally). The `not_covered` field in every result lists them.
 
@@ -178,7 +213,7 @@ providers registered only nationally). The `not_covered` field in every result l
 
 | What | How often | Where you see it |
 |---|---|---|
-| Our copy of each register and warning list | Read from the official file **every day** (ESMA MiFID and EBA at 10:25, ECB MFI list and AFM / FSMA / AMF lists at 10:40, MiCA registers and EU sanctions at 20:05, Amsterdam time) | `history` in each result |
+| Our copy of each register and warning list | Read from the official file **every day** (ESMA MiFID, EBA and IOSCO I-SCAN at 10:25, ECB MFI list and AFM / FSMA / AMF lists at 10:40, MiCA registers and EU sanctions at 20:05, Amsterdam time) | `history` in each result |
 | The data bundled in this Actor | **Rebuilt and republished every day at about 11:15 Amsterdam time** from the latest daily copies, after the full test suite passes | `coverage[].data_as_of` per source, in every result |
 | Live refresh during your run | `refresh: auto` (default): any source older than `max_age_hours` (48 h) is fetched live from the official file at the start of your run. `always`: every source. `never`: bundled data only | the same `data_as_of` (then the time of your run) |
 
@@ -215,6 +250,9 @@ where a source was down still returns a verdict (never ALLOW in that case) and i
   update: `attribution` and `data_as_of` in each result).
 - FSMA (Belgium), list of companies operating unlawfully in Belgium: CC BY 4.0.
 - Autoriteit Financiële Markten (AFM), waarschuwingslijst: reuse with explicit attribution to the AFM.
+- IOSCO I-SCAN (International Securities & Commodities Alerts Network), via the I-SCAN API under its Terms of Use:
+  reuse with attribution. Each warning was published by the national authority named in it; the result links to that
+  authority's notice. IOSCO is not responsible for this Actor.
 - European Commission, EU Financial Sanctions Files: reuse authorised, source acknowledged.
 - GLEIF LEI records (LEI look-up and the bundled LEI status data): CC0.
 

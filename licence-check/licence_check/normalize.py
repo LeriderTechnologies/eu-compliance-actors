@@ -98,7 +98,11 @@ def name_similarity(a: str, b: str) -> float:
 
 # ---------------------------------------------------------------------------------------------------------- domains
 _MULTI_TLD = {"co.uk", "org.uk", "com.au", "co.za", "com.cy", "com.mt", "com.pl", "co.nz", "com.br", "co.il", "com.tr",
-              "com.cn", "com.hk", "co.jp", "com.sg", "ltd.uk", "net.pl", "com.ua", "co.in", "com.es", "com.gr"}
+              "com.cn", "com.hk", "co.jp", "com.sg", "ltd.uk", "net.pl", "com.ua", "co.in", "com.es", "com.gr",
+              # second-level registries that sell names under them (I-SCAN has scam sites on all of these)
+              "com.mx", "com.ar", "com.my", "com.tw", "co.th", "com.ph", "co.kr", "com.co", "com.sa", "co.id",
+              "com.vn", "com.ng", "co.ke", "com.eg", "it.com", "co.com", "cn.com", "eu.com", "uk.com", "us.com",
+              "de.com", "br.com", "ru.com", "sa.com", "za.com", "blogspot.sg"}
 _URL = re.compile(r"(?i)\b(?:https?://)?(?:[a-z0-9-]+@)?((?:[a-z0-9¡-￿-]+\.)+[a-z¡-￿]{2,})(?::\d+)?(?:/\S*)?")
 
 

@@ -1,0 +1,198 @@
+[
+ {
+  "id": 57946,
+  "nca_id": 77,
+  "nca_name": "Autorité des marchés financiers",
+  "nca_jurisdiction": "Quebec",
+  "nca_registration_date": "2026-11-06",
+  "nca_url": "https://lautorite.qc.ca/en/general-public/media-centre/investor-warnings/investor-warnings-sheet/lky",
+  "commercial_name": "LKY",
+  "other_commercial_names": [
+   "Lkyexch"
+  ],
+  "url": "https://Lkyexch.com",
+  "domain_name": "Lkyexch.com",
+  "fqdn": "",
+  "ip_address_v4": "",
+  "ip_address_v6": "",
+  "email": [
+   "support@mail.lkygg.com"
+  ],
+  "lei": "",
+  "categories": [
+   1
+  ],
+  "categories_detailed": [
+   "Unregistered/Unlicensed entity offering financial products or services"
+  ],
+  "products": [
+   6
+  ],
+  "products_detailed": [
+   "Crypto and Digital Assets"
+  ],
+  "additional_information": "LKY (Lkyexch) is not registered with the Autorité des marchés financiers (AMF) and is not authorized to solicit investors in Québec.",
+  "validation_date": "2026-11-06",
+  "modification_date": "2026-11-06"
+ },
+ {
+  "id": 55013,
+  "nca_id": 39,
+  "nca_name": "Securities and Futures Commission",
+  "nca_jurisdiction": "Hong Kong",
+  "nca_registration_date": "2026-07-10",
+  "nca_url": "https://www.sfc.hk/en/alert-list/3481",
+  "commercial_name": "VT Markets;VT Markets (Pty) Ltd;VT Markets Limited;VT Markets Ltd",
+  "url": "",
+  "other_urls": [
+   "https://www.vtmarkets.com",
+   "https://www.vtmarketsglobal.com",
+   "https://www.vtmarkets.net"
+  ],
+  "domain_name": "",
+  "fqdn": "",
+  "ip_address_v4": "",
+  "ip_address_v6": "",
+  "lei": "",
+  "additional_information": "The companies are not licensed by or registered with the SFC in respect of any regulated activity under the Securities and Futures Ordinance. The companies are not permitted to carry on any regulated activity in Hong Kong or actively market (whether in Hong Kong or from a place outside Hong Kong) to the Hong Kong public its services which would constitute a regulated activity if provided in Hong Kong.",
+  "validation_date": "2026-07-13",
+  "modification_date": "2026-07-13"
+ },
+ {
+  "id": 56420,
+  "nca_id": 26,
+  "nca_name": "Danish Financial Supervisory Authority",
+  "nca_jurisdiction": "Denmark",
+  "nca_registration_date": "2025-09-05",
+  "nca_url": "https://www.dfsa.dk/supervision/warnings-against-companies/2026/warning-against-dufourbit-1",
+  "commercial_name": "Warning against investing with DUFOURBIT PTY LTD",
+  "url": "https://www.dfsa.dk/supervision/warnings-against-companies/2026/warning-against-dufourbit-1",
+  "domain_name": "",
+  "fqdn": "",
+  "ip_address_v4": "",
+  "ip_address_v6": "",
+  "lei": "",
+  "categories": [
+   1
+  ],
+  "categories_detailed": [
+   "Unregistered/Unlicensed entity offering financial products or services"
+  ],
+  "additional_information": "The Danish Financial Supervisory Authority has been informed that dufourbit unsolicited has offered to carry out financial services in Denmark. The company's homepage is dufourbit.com",
+  "validation_date": "2026-09-03",
+  "modification_date": "2026-09-03"
+ },
+ {
+  "id": 57934,
+  "nca_id": 91,
+  "nca_name": "Securities and Exchange Commission",
+  "nca_jurisdiction": "Thailand",
+  "nca_registration_date": "2026-11-06",
+  "nca_url": "https://web-invpublic.sec.or.th/e/0621/2569",
+  "commercial_name": "Facebook page \"Walter Rodgers\"",
+  "url": "https://www.facebook.com/profile.php?id=61596266244715",
+  "other_urls": [
+   "https://www.facebook.com/ads/library/?id=1612586543686247"
+  ],
+  "domain_name": "",
+  "fqdn": "",
+  "ip_address_v4": "",
+  "ip_address_v6": "",
+  "lei": "",
+  "categories": [
+   7
+  ],
+  "categories_detailed": [
+   "Other"
+  ],
+  "social_media": [
+   {
+    "platform": 4,
+    "handle": "https://www.facebook.com/profile.php?id=61596266244715"
+   }
+  ],
+  "social_media_detailed": [
+   "Facebook: https://www.facebook.com/profile.php?id=61596266244715"
+  ],
+  "additional_information": "This account is not affiliated with any businesses licensed or regulated by the SEC Thailand. Kindly be cautious with your investments.",
+  "validation_date": "2026-11-06",
+  "modification_date": "2026-11-06"
+ },
+ {
+  "id": 55913,
+  "nca_id": 34,
+  "nca_name": "Autorité des marchés financiers",
+  "nca_jurisdiction": "France",
+  "nca_registration_date": "2026-08-14",
+  "nca_url": "https://www.amf-france.org/en/warnings/blacklists/amf-usurpation/supportafmdefrancrgmailcom",
+  "commercial_name": "",
+  "domain_name": "",
+  "fqdn": "",
+  "ip_address_v4": "",
+  "ip_address_v6": "",
+  "email": [
+   "supportafmdefrancr@gmail.com"
+  ],
+  "lei": "",
+  "categories": [
+   3
+  ],
+  "categories_detailed": [
+   "Regulator/Government impersonators"
+  ],
+  "additional_information": "",
+  "validation_date": "2026-08-24",
+  "modification_date": "2026-10-27"
+ },
+ {
+  "id": 57717,
+  "nca_id": 7,
+  "nca_name": "Australian Securities and Investments Commission",
+  "nca_jurisdiction": "Australia",
+  "nca_registration_date": "2026-10-23",
+  "nca_url": "https://moneysmart.gov.au/check-and-report-scams/investor-alert-list#!impersonation-of-international-capital-markets-pty-ltd--universalstocktrading-com--4929",
+  "commercial_name": "Impersonation of International Capital Markets Pty Ltd (universalstocktrading.com)",
+  "other_commercial_names": [
+   "Universal Stock Trading"
+  ],
+  "url": "https://universalstocktrading.com",
+  "categories": [
+   2
+  ],
+  "categories_detailed": [
+   "Registered/Licensed entity impersonators"
+  ],
+  "validation_date": "2026-10-23",
+  "modification_date": "2026-10-27"
+ },
+ {
+  "id": 57917,
+  "nca_id": 43,
+  "nca_name": "Central Bank of Ireland",
+  "nca_jurisdiction": "Ireland",
+  "nca_registration_date": "2026-11-05",
+  "nca_url": "https://www.centralbank.ie/news/article/eurizon-investment-(clone)---central-bank-of-ireland-issues-warning-on-unauthorised-firm",
+  "commercial_name": "Eurizon Investment (CLONE)",
+  "url": "www.eurizoninvestment.com",
+  "domain_name": "",
+  "fqdn": "",
+  "ip_address_v4": "",
+  "ip_address_v6": "",
+  "email": [
+   "@eurizoninvestment.com",
+   "info@eurizoninvestment.com"
+  ],
+  "lei": "",
+  "categories": [
+   1,
+   2
+  ],
+  "categories_detailed": [
+   "Unregistered/Unlicensed entity offering financial products or services",
+   "Registered/Licensed entity impersonators"
+  ],
+  "additional_information": "",
+  "validation_date": "2026-11-06",
+  "modification_date": "2026-11-06"
+ }
+]

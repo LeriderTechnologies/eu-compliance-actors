@@ -19,7 +19,7 @@ import re
 import xml.etree.ElementTree as ET
 import zipfile
 
-from .normalize import domains_in, iso_date, norm_country, norm_domain, norm_id, norm_lei
+from .normalize import domains_in, iso_date, norm_country, norm_domain, norm_id, norm_lei, registered_domain
 
 # ------------------------------------------------------------------------------------------------- source registry
 # scope: ISO-2 list of home states the source covers ("EEA" = all 30); live: the Actor may refetch it at run time.
@@ -119,6 +119,16 @@ SOURCES = {
             "ou-services-financiers-en-france/",
         licence="Licence Ouverte / Open Licence 2.0 (Etalab)",
         attribution="Source: AMF, listes noires (data.gouv.fr, Licence Ouverte 2.0)", recorder="nca-lists", live=True),
+    "iosco_iscan": dict(
+        title="IOSCO I-SCAN: investor warnings published by securities regulators worldwide (100+ authorities, incl. "
+              "BaFin, CNMV, CONSOB, Central Bank of Ireland, FCA, FINMA, ASIC, SEC)",
+        kind="warning", scope="EEA", authority="IOSCO (warnings from the national authority named in each record)",
+        url="https://www.iosco.org/i-scan/",
+        licence="I-SCAN API Terms of Use (non-member): reuse allowed with attribution, without distortion",
+        attribution="Source: IOSCO I-SCAN (International Securities & Commodities Alerts Network); each warning was "
+                    "published by the national authority named in it",
+        recorder="fin-registers", live=False,  # API key stays on the recorder box; the Actor uses the daily build
+        fuzzy=False),  # exact/core name, domain and LEI only: some warnings name people (e.g. a fake Facebook page)
     "eu_sanctions": dict(
         title="EU consolidated financial sanctions list (legal entities only)",
         kind="sanction", scope="EEA", authority="European Commission (FSF)",
@@ -130,11 +140,9 @@ SOURCES = {
 
 # Not covered, and why (shown in the Actor's coverage block and in the README).
 NOT_COVERED = {
-    "IOSCO I-SCAN (global warnings incl. most EU authorities)": "export behind Cloudflare; API needs signed terms",
-    "BaFin (DE) warnings": "no bulk machine-readable export found",
-    "CONSOB (IT) warnings / blocked sites": "reuse limited to study/research/information; not for a paid service",
-    "CNMV (ES) warnings": "no bulk export found (JavaScript search only)",
-    "UK FCA warning list / register": "UK, outside EU scope; RSS copies 'not for redistribution', register API key",
+    "BaFin (DE), CONSOB (IT), CNMV (ES) warnings outside I-SCAN": "only the warnings these authorities also post to "
+        "IOSCO I-SCAN are covered; no bulk export of their own lists",
+    "UK FCA register (licences)": "UK, outside EU scope; FCA warnings are covered through IOSCO I-SCAN",
     "National-only licences (consumer credit, insurance distribution, AFM FD register, DNB trust offices...)":
         "not in the EU-level registers; national registers not yet added",
     "Insurance undertakings (EIOPA register)": "not yet added",
@@ -157,6 +165,23 @@ EBA_TYPES = {
 }
 
 
+# Hosts shared by many unrelated sites (social networks, app stores, link shorteners, free hosting): a warning that
+# points there must not turn the whole platform into a match key.
+SHARED_DOMAINS = {
+    "facebook.com", "fb.com", "instagram.com", "line.me", "lin.ee", "t.me", "telegram.me", "telegram.org", "wa.me",
+    "whatsapp.com", "google.com", "apple.com", "linkedin.com", "x.com", "twitter.com", "youtube.com", "youtu.be",
+    "tiktok.com", "discord.gg", "discord.com", "reddit.com", "medium.com", "linktr.ee", "bit.ly", "pages.dev",
+    "vercel.app", "netlify.app", "github.io", "herokuapp.com", "wixsite.com", "weebly.com", "blogspot.com",
+    "wordpress.com", "webflow.io", "firebaseapp.com", "web.app", "carrd.co", "godaddysites.com", "square.site",
+    "glitch.me", "onrender.com", "azurewebsites.net", "cloudfront.net", "amazonaws.com", "wechat.com", "weibo.com",
+    "qq.com", "pinterest.com", "tumblr.com", "snapchat.com", "twitch.tv", "quora.com", "iosco.org", "webs.com",
+    "jimdo.com", "jimdosite.com", "site123.me", "mystrikingly.com", "framer.website", "notion.site"}
+# Free e-mail providers: a fraudster's gmail address says nothing about gmail.com.
+FREEMAIL = {
+    "gmail.com", "googlemail.com", "outlook.com", "hotmail.com", "live.com", "msn.com", "yahoo.com", "ymail.com",
+    "aol.com", "icloud.com", "me.com", "mail.com", "consultant.com", "protonmail.com", "proton.me", "pm.me",
+    "tuta.com", "tutanota.com", "gmx.com", "gmx.net", "gmx.de", "web.de", "yandex.com", "yandex.ru", "mail.ru",
+    "zoho.com", "qq.com", "163.com", "126.com", "naver.com", "hushmail.com", "inbox.com", "usa.com", "email.com"}
 def _rec(src, key, **kw):
     r = {"src": src, "key": key, "kind": SOURCES[src]["kind"], "name": "", "names": [], "lei": None, "ids": [],
          "country": None, "authority": None, "type": None, "status": None, "since": None, "until": None,
@@ -170,6 +195,8 @@ def _rec(src, key, **kw):
         r["name"] = next((x for x in r["name"] if x), "")
     r["names"] = flat
     r["names"] =sorted({n.strip() for n in r["names"] if n and n.strip() and n.strip() != r["name"]})
+    if r["kind"] != "licence":  # a fraudster's gmail address or Facebook page must not make gmail.com/facebook.com warned
+        r["domains"] = [d for d in r["domains"] if registered_domain(d) not in SHARED_DOMAINS | FREEMAIL]
     return r
 
 
@@ -531,8 +558,9 @@ def amf_blacklist_records(b: bytes):
         for x in parts:
             dm = norm_domain(x) if (" " not in x and "." in x) else None
             (doms.append(dm) if dm else names.append(x))
+        doms = [x for x in doms if registered_domain(x) not in SHARED_DOMAINS | FREEMAIL]
         if not names and not doms:
-            continue
+            continue  # e.g. only a gmail address: nothing safe to match on
         if "@" in nom and not names:
             how = "e-mail domain"
         elif not names:
@@ -631,6 +659,74 @@ def amf_biens_divers_records(b: bytes):
             status="active", since=iso_date(d.get("date_enregistrement") or ""),
             domains=domains_in(d.get("url_offre") or ""), detail_url=d.get("url_offre") or None,
             category="biens divers (tangible-asset investment)"))
+    return out
+
+
+# ------------------------------------------------------------------------------------------------- IOSCO I-SCAN
+ISCAN_JURIS = {
+    "united kingdom": "GB", "switzerland": "CH", "new zealand": "NZ", "thailand": "TH", "australia": "AU",
+    "hong kong": "HK", "united states of america": "US", "british columbia": "CA", "ontario": "CA", "quebec": "CA",
+    "alberta": "CA", "singapore": "SG", "malaysia": "MY", "ukraine": "UA", "japan": "JP",
+    "british virgin islands": "VG", "brazil": "BR", "oman, sultanate of": "OM", "jersey": "JE", "argentina": "AR",
+    "egypt": "EG", "chile": "CL", "south africa": "ZA", "panama": "PA", "gibraltar": "GI", "mauritius": "MU",
+    "united arab emirates": "AE", "difc, dubai": "AE", "abu dhabi": "AE", "mexico": "MX", "chinese taipei": "TW",
+    "isle of man": "IM", "bermuda": "BM", "seychelles": "SC", "nigeria": "NG", "montenegro": "ME",
+    "aifc, astana": "KZ", "palestine": "PS", "dominican republic": "DO", "guernsey": "GG", "uruguay": "UY",
+    "sri lanka": "LK", "algeria": "DZ", "bahamas": "BS", "kuwait": "KW", "jordan": "JO", "pakistan": "PK",
+    "israel": "IL", "belize": "BZ", "qatar": "QA", "armenia": "AM", "paraguay": "PY", "trinidad and tobago": "TT",
+    "bangladesh": "BD", "india": "IN", "andorra": "AD", "angola": "AO", "croatia, republic of": "HR",
+    "tunisia": "TN", "the netherlands": "NL"}
+_ISCAN_PREFIX = re.compile(r"(?i)^\s*(?:warning|advarsel)\s+(?:against|mod)\s+(?:investing\s+with\s+|investering\s+i\s+)?")
+
+
+def _iscan_names(*fields):
+    out = []
+    for f in fields:
+        for v in (f if isinstance(f, list) else [f]):
+            for n in re.split(r"\s*;\s*", v or ""):
+                n = _ISCAN_PREFIX.sub("", n).strip()
+                if n and n not in out:
+                    out.append(n)
+    return out
+
+
+def iscan_records(items):
+    """IOSCO I-SCAN warnings (API JSON objects) -> warning records. Domains from the entity's URLs and e-mail
+    addresses (domain only: e-mail addresses can be personal data); shared platforms, free-mail providers and the
+    warning authority's own site are dropped. Impersonators of licensed firms get category 'clone'."""
+    out = []
+    for d in items:
+        if not isinstance(d, dict) or d.get("id") is None:
+            continue
+        own = {registered_domain(x) for x in [norm_domain(d.get("nca_url") or "")] if x}
+        doms = []
+        for u in [d.get("url"), d.get("domain_name"), d.get("fqdn"), *(d.get("other_urls") or [])]:
+            x = norm_domain(u or "")
+            if x and registered_domain(x) not in SHARED_DOMAINS | FREEMAIL | own and x not in doms:
+                doms.append(x)
+        for e in d.get("email") or []:
+            x = norm_domain(e or "")
+            if x and registered_domain(x) not in FREEMAIL | SHARED_DOMAINS | own and x not in doms:
+                doms.append(x)
+        names = _iscan_names(d.get("commercial_name"), d.get("other_commercial_names") or [],
+                             d.get("corporate_names") or [])
+        for x in domains_in(" ".join(names)):  # e.g. "VT Markets / www.vtmarkets.com"
+            if registered_domain(x) not in SHARED_DOMAINS | own and x not in doms:
+                doms.append(x)
+        lei = norm_lei(d.get("lei") or "")
+        if not names and not doms and not lei:
+            continue  # nothing to match on (e.g. a social-media handle only)
+        cats = d.get("categories_detailed") or []
+        clone = 2 in (d.get("categories") or []) or bool(re.search(r"(?i)\bclone|imperson", " ".join(names)))
+        juris = d.get("nca_jurisdiction") or ""
+        out.append(_rec(
+            "iosco_iscan", str(d["id"]), name=names[0] if names else doms[0], names=names[1:], lei=lei, domains=doms,
+            country=norm_country(juris) or ISCAN_JURIS.get(juris.strip().lower()),
+            authority=f"{d.get('nca_name') or 'unknown authority'} ({juris}) via IOSCO I-SCAN",
+            type="Investor warning (" + ", ".join(cats or ["category not given"]) + ")", status="listed",
+            date=iso_date(d.get("nca_registration_date") or "") or iso_date(d.get("validation_date") or ""),
+            category="; ".join(["clone"] * clone + list(d.get("products_detailed") or [])) or None,
+            detail_url=d.get("nca_url") or None))
     return out
 
 

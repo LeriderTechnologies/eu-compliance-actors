@@ -25,6 +25,20 @@ from .normalize import core_name, norm_domain, norm_id, norm_name, registered_do
 SCHEMA = 1
 DEFAULT_DATA = Path(os.environ.get("SB_RECORDER_DATA", Path.home() / "data" / "recorders"))
 PKG_INDEX = Path(__file__).resolve().parent.parent / "data" / "index.json.gz"
+# Records left out of the build, one "<src> <key>" per line (# comments). Kept next to the package, never shipped:
+# used when a public record trips the upload leak guard (2026-11-06: one I-SCAN firm name).
+EXCLUDE_FILE = Path(__file__).resolve().parent.parent / "index_exclude.txt"
+
+
+def _excluded() -> set[tuple[str, str]]:
+    if not EXCLUDE_FILE.exists():
+        return set()
+    out = set()
+    for line in EXCLUDE_FILE.read_text().splitlines():
+        parts = line.split("#", 1)[0].split()
+        if len(parts) == 2:
+            out.add((parts[0], parts[1]))
+    return out
 
 # recorder file sources: (recorder, recorder source name) -> (our src, variant)
 FILE_SOURCES = {
@@ -160,6 +174,16 @@ def build(data: Path = DEFAULT_DATA) -> dict:
         srcmeta["eba_psd"] = {"data_as_of": fh.get("eba_psd"), "first_recorded": first,
                               "published": st.get("file"), "published_sha256": st.get("sha256"), "records": len(recs)}
 
+    if (data / "fin-registers" / "current.iosco_iscan.jsonl.gz").exists():
+        recs = S.iscan_records(_load_fin_current(data, "iosco_iscan"))
+        hist, first = _fin_history(data, "iosco_iscan")
+        for r in recs:
+            r["history"] = hist.get(r["key"], {"first_seen": None, "events": []})
+        records += recs
+        st = fst.get("iosco_iscan") or {}
+        srcmeta["iosco_iscan"] = {"data_as_of": fh.get("iosco_iscan"), "first_recorded": first,
+                                  "published": st.get("last_run"), "records": len(recs)}
+
     # --- file sources (eu-registers, nca-lists): full raw versions
     healths = {rec: _health(data, rec) for rec in ("eu-registers", "nca-lists")}
     states = {rec: _state(data, rec) for rec in ("eu-registers", "nca-lists")}
@@ -182,6 +206,11 @@ def build(data: Path = DEFAULT_DATA) -> dict:
         st = states[recorder].get(rsrc) or {}
         m["parts"][rsrc] = {"published": st.get("generationDate") or st.get("published") or st.get("head"),
                             "sha256": st.get("sha256"), "records": len(recs)}
+    ex = _excluded()
+    if ex:
+        records = [r for r in records if (r["src"], r["key"]) not in ex]
+        for src in {s for s, _ in ex} & set(srcmeta):
+            srcmeta[src]["records"] = sum(1 for r in records if r["src"] == src)
     for src, m in srcmeta.items():
         m.update({k: S.SOURCES[src][k] for k in ("title", "kind", "authority", "url", "licence", "attribution")})
     return {"schema": SCHEMA, "built_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),

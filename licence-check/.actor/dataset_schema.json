@@ -63,7 +63,7 @@
           "array",
           "null"
         ],
-        "description": "Matched register entries (max 5): register, authority, type, status, authorised_since, withdrawn_on, passported_to, services, match {method, confidence}, history {first_seen_by_us, changes}, data_as_of"
+        "description": "Matched register entries (max 5): register, authority, type, status, authorised_since, withdrawn_on, passported_to, services, match {method, confidence}, history {first_seen_by_us, changes}, data_as_of; with an LEI also lei_status (GLEIF: ISSUED / LAPSED / RETIRED ...) and successor_lei"
       },
       "warnings": {
         "type": [
@@ -98,7 +98,7 @@
           "object",
           "null"
         ],
-        "description": "Your claimed licence: type, country, covered (false = not_covered), found, found_active"
+        "description": "Your claimed licence: type, country, covered (false = not_covered), found, found_active; matched_as (absent unless only a sibling licence type matched, e.g. AIFM/UCITS ManCo for an investment_firm claim, EMI for a payment_institution claim) and a plain note"
       },
       "as_of": {
         "type": [

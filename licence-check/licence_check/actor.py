@@ -71,6 +71,8 @@ def refresh(ix: I.Index, items: list, mode: str = "auto", max_age_hours: float =
     failed = {}
     for src, m in S.SOURCES.items():
         meta = ix.meta.get(src, {})
+        if not m.get("live", True):  # e.g. IOSCO I-SCAN: API key stays on the recorder box; daily build only
+            continue
         if mode == "auto" and src in ix.sources() and _age_hours(meta.get("data_as_of"), now) < max_age_hours:
             continue
         try:

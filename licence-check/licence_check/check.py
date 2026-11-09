@@ -43,17 +43,36 @@ class InputError(ValueError):
 CLAIM_TYPES = {
     # ECB MFI list only: the ESMA MiFID register does not label which of its firms are credit institutions.
     "bank": (["ecb_mfi"], lambda r: "credit institution" in (r.get("type") or "").lower()),
-    "payment_institution": (["eba_psd"], lambda r: r["type"] in (S.EBA_TYPES["PSD_PI"], S.EBA_TYPES["PSD_EPI"])),
+    # A generic "payment institution" claim also matches an EMI/EEMI: same EBA PSD register, and firms often hold
+    # only the e-money authorisation today (e.g. Mollie B.V., whose PI entry was superseded by an EMI one). A
+    # precise claim of "emi" still goes through its own, narrower type. SIBLING_CLAIMS below tells the EMI-only
+    # case apart from a strict PI match and sets matched_as + REVIEW.
+    "payment_institution": (["eba_psd"], lambda r: r["type"] in (
+        S.EBA_TYPES["PSD_PI"], S.EBA_TYPES["PSD_EPI"], S.EBA_TYPES["PSD_EMI"], S.EBA_TYPES["PSD_EEMI"])),
     "emi": (["eba_psd"], lambda r: r["type"] in (S.EBA_TYPES["PSD_EMI"], S.EBA_TYPES["PSD_EEMI"])),
     "aisp": (["eba_psd"], lambda r: r["type"] == S.EBA_TYPES["PSD_AISP"] or "account information" in
              " ".join(r.get("services") or [])),
     "pisp": (["eba_psd"], lambda r: "payment initiation" in " ".join(r.get("services") or [])),
-    "investment_firm": (["esma_mifid"], lambda r: (r.get("type") or "").startswith("Investment firm")),
+    # A generic "investment firm" claim also matches AIFMs and UCITS ManCos: same ESMA MiFID register, under their
+    # own entityTypeLabel. These are a different EU authorisation from a MiFID investment firm (AIFMD/UCITS vs
+    # MiFID II), so SIBLING_CLAIMS below tests the strict "Investment firm" label first and only falls back to
+    # AIFM/UCITS ManCo when no strict match exists, flagging that fallback with matched_as + REVIEW (Seawind
+    # Capital Partners, an active AIFM, falsely not-found on "investment firm NL"; follow-up: a generic claim must
+    # not read as "licensed as claimed" when the licence type actually differs).
+    "investment_firm": (["esma_mifid"], lambda r: (r.get("type") or "").startswith(
+        ("Investment firm", "AIFM", "UCITS management company"))),
     # AMF SGP list (FR): an SGP whose activities include managing AIFs ('Gestion de FIA') or UCITS ('OPCVM')
     "aifm": (["esma_mifid", "amf_sgp"], lambda r: (r.get("type") or "").startswith("AIFM") or (
         r["src"] == "amf_sgp" and any(s.startswith("activity: 2 - Gestion de FIA") for s in r.get("services") or []))),
     "ucits_manco": (["esma_mifid", "amf_sgp"], lambda r: (r.get("type") or "").startswith("UCITS") or (
         r["src"] == "amf_sgp" and "activity: 1 - OPCVM" in (r.get("services") or []))),
+    # Generic "fund manager" / "fund management company" wording: satisfied by either fund-manager
+    # authorisation, AIFM or UCITS management company (same tests as the two precise types above). Both are fund
+    # managers, so no matched_as/REVIEW fallback; the licence entry's own type is shown. ~480 active ESMA entries
+    # are UCITS-only, so mapping this wording to "aifm" alone would read them as not-found.
+    "fund_manager": (["esma_mifid", "amf_sgp"], lambda r: (r.get("type") or "").startswith(("AIFM", "UCITS")) or (
+        r["src"] == "amf_sgp" and (any(s.startswith("activity: 2 - Gestion de FIA") for s in r.get("services") or [])
+                                   or "activity: 1 - OPCVM" in (r.get("services") or [])))),
     "sgp": (["amf_sgp"], lambda r: r["src"] == "amf_sgp"),  # société de gestion de portefeuille (FR)
     "biens_divers": (["amf_biens_divers"], lambda r: r["src"] == "amf_biens_divers"),  # registered offer (FR)
     "crowdfunding": (["esma_mifid"], lambda r: "Crowdfunding" in (r.get("type") or "")),
@@ -65,6 +84,33 @@ CLAIM_TYPES = {
 }
 NOT_COVERED_TYPES = {"insurance", "insurer", "insurance_intermediary", "consumer_credit", "mortgage", "pension_fund",
                      "trust_office", "currency_exchange", "financial_advisor", "credit_provider", "other"}
+# Claim types where CLAIM_TYPES' test is deliberately widened to a sibling licence type (a different EU
+# authorisation that a non-specialist claim's wording also matches). strict: the precise test for the claim's own
+# type. A claim whose matches are strict -> ordinary behaviour (as before the widening). A claim whose matches are
+# ALL the sibling type -> found=true, matched_as = the sibling type(s), a plain note, and REVIEW -- unless the
+# claim's own free text uses only soft_words (never when it also matches hard_words) AND the strict type was never
+# found active at all (not even withdrawn): then it stays ALLOW (still with matched_as), because that wording does
+# not promise the precise licence type. A strict entry that was found and WITHDRAWN always forces REVIEW, even on
+# soft wording, with a reason naming its status + withdrawal date (0.1.26: a withdrawn MiFID licence must not
+# hide behind soft wording).
+SIBLING_CLAIMS = {
+    "investment_firm": {
+        "strict": lambda o: (o.get("type") or "").startswith("Investment firm"),
+        "note": ("holds an AIFM / UCITS management company authorisation, not a MiFID investment-firm licence; "
+                 "check the claim if the firm offers broker/dealer/advice/portfolio services"),
+        "label": "a MiFID investment firm",
+        "soft_words": r"asset manag|fund manag|wealth manag|vermogensbeheer|vermogensverwalt",
+        "hard_words": r"investment firm|broker|dealer|beleggingsonderneming|wertpapier|mifid",
+    },
+    "payment_institution": {
+        "strict": lambda o: o.get("type") in (S.EBA_TYPES["PSD_PI"], S.EBA_TYPES["PSD_EPI"]),
+        "note": ("holds an electronic money institution licence, which may also provide payment services; not a "
+                 "payment-institution licence"),
+        "label": "a payment institution",
+        "soft_words": None,
+        "hard_words": None,
+    },
+}
 _CLAIM_WORDS = [  # free-text claim -> type (first match wins)
     (r"biens? divers|tangible.asset offer|miscellaneous goods", "biens_divers"),
     (r"e-?money token|\bemt\b", "emt_issuer"), (r"asset.referenced|\bart\b", "art_issuer"),
@@ -73,10 +119,32 @@ _CLAIM_WORDS = [  # free-text claim -> type (first match wins)
     (r"payment|betaal|paiement|zahlungs", "payment_institution"),
     (r"crypto|casp|mica|psan|virtual asset|vasp", "casp"), (r"crowdfund", "crowdfunding"),
     (r"societe de gestion|gestion de portefeuille|\bsgp\b|portfolio management compan", "sgp"),
-    (r"\baifm?\b|alternative investment", "aifm"), (r"ucits|management company|ucits", "ucits_manco"),
-    (r"investment firm|broker|beleggingsonderneming|wertpapier|mifid|dealer|asset manag", "investment_firm"),
+    (r"\baifm?d?\b|alternative investment", "aifm"),
+    (r"ucits|\bogaw|\bicbe\b|\bopcvm\b", "ucits_manco"),  # OGAW (DE), ICBE (NL), OPCVM (FR) = UCITS
+    # insurance distribution before the investment-firm rule, else "insurance broker" reads as a MiFID broker
+    (r"(insur\w*|reinsur\w*) (broker|intermediar|agent|distribut)|verzekerings?(tussenpersoon|bemiddel|makelaar|agent)|"
+     r"assurantie(tussenpersoon|bemiddel|makelaar)|versicherungs(makler|vermittl|agent)|"
+     r"(courtier|intermediaire|agent general|agent) (en |d.)assurance", "insurance_intermediary"),
+    (r"\bfunds? manag|\bfonds ?(manag|beheer)|beheerder van (een )?beleggingsinstelling|"
+     r"kapitalverwaltungsgesellschaft|\bkvg\b|gestionnaire de fonds|\bmanco\b", "fund_manager"),  # generic wording
+    # before the investment-firm rule (else "... broker" reads as a MiFID broker):
+    # a claim ending in "bank" is a bank claim, even after wealth/asset/fund wording ("private wealth management bank")
+    (r"bank\W*(\b[a-z]{2}\b\W*)?$", "bank"),
+    # mortgage / consumer-credit intermediation is national (MCD / CCD), not MiFID; same not-covered type as "mortgage"
+    (r"(mortgage|hypothe\w*|credit|loan|krediet|kredit|darlehens?) ?(broker|intermediar|advis|agent|bemiddel|vermittl|makelaar)|"
+     r"immobiliardarlehen|courtier en (credit|pret)|intermediaire en credit", "consumer_credit"),
+    # real-estate brokerage (estate agents) is not a financial licence
+    (r"(real estate|property|estate|vastgoed|immobilien|immobilier) ?(broker|agent|makler|makelaar)|"
+     r"immobilienmakler|agent immobilier", "other"),
+    (r"investment firm|broker|beursmakelaar|beleggingsonderneming|wertpapier|mifid|dealer|asset manag|wealth manag|"
+     r"vermogensbeheer|vermogensverwalt|portfolioverwalt", "investment_firm"),
+    # building/real-estate management is not a financial licence; must not fall through to the ManCo rule below
+    (r"(property|real estate|vastgoed|facility|building|immobilien|syndic) ?manag|vastgoedbeheer|"
+     r"hausverwalt|immobilienverwalt|gestion (immobiliere|locative)", "other"),
+    (r"management company", "ucits_manco"),  # must come after asset manag above, else "asset management
+    # company" (an investment_firm claim) falsely reads as a bare UCITS management-company claim
     (r"bank|credit institution|kredietinstelling|kreditinstitut|etablissement de credit", "bank"),
-    (r"insur|verzeker|versicher", "insurance"), (r"consumer credit|krediet|mortgage|hypothe", "consumer_credit"),
+    (r"insur|verzeker|versicher|\bassur|\breassur", "insurance"), (r"consumer credit|krediet|mortgage|hypothe", "consumer_credit"),
     (r"trust office|trustkantoor", "trust_office"), (r"pension", "pension_fund"),
 ]
 
@@ -200,6 +268,8 @@ def _candidates(ix: Index, q: dict, extra_names: list[str]):
                     if i in hits:
                         continue
                     r = ix.records[i]
+                    if not S.SOURCES[r["src"]].get("fuzzy", True):
+                        continue
                     best = max(name_similarity(n, x) for x in [r["name"]] + (r.get("names") or []) if x)
                     if best >= FUZZY_MIN:
                         put(i, round(min(0.85, 0.6 + (best - FUZZY_MIN) * 2.0), 2), "fuzzy_name")
@@ -363,8 +433,9 @@ def check_entity(req: dict, ix: Index, *, today: str | None = None, unavailable:
             worse("REVIEW")
             reasons.append(f"Possible EU sanctions match: '{s['name']}' ({s['match']['method']} "
                            f"{s['match']['confidence']})")
-    notes, warn_block = [], False
+    notes, warn_block, warn_on_licensed = [], False, False
     qd = registered_domain(q["domain"]) if q["domain"] else None
+    lic_domains = {registered_domain(d) for o in active_lic for d in o.get("domains") or []}
     for w in warn:
         r_is_clone = "clone" in fold(" ".join(filter(None, [w["name"], w.get("category") or "",
                                                              str(w.get("parent") or "")])))
@@ -374,12 +445,19 @@ def check_entity(req: dict, ix: Index, *, today: str | None = None, unavailable:
         name_based = how not in ("domain", "lei", "reg_number")
         # A licensed firm whose name also appears on a warning list: usually impersonation or a clone.
         same_name_as_licensed = name_based and (bool(active_lic) or strong_lic_ids)
-        if on_listed_domain:
+        if on_listed_domain and qd in lic_domains:
+            # The register confirms this domain for an authorised firm: the warning may predate the licence
+            # (e.g. a 2022 warning on a firm licensed under MiCA since) or apply in one country only.
+            worse("REVIEW"); warn_on_licensed = True
+            reasons.append(f"licensed_and_warned: {where} lists '{w['name']}' with your domain {q['domain']}"
+                           + (f" ({w['date']})" if w.get("date") else "")
+                           + ", and the register confirms that domain for an authorised firm; the warning may "
+                             "predate the licence or apply in that country only: check before paying")
+        elif on_listed_domain:
             worse("BLOCK"); warn_block = True
             reasons.append(f"On a warning list: {where} lists '{w['name']}' with your domain {q['domain']}"
                            + (f" ({w['date']})" if w.get("date") else ""))
         elif r_is_clone or same_name_as_licensed:
-            lic_domains = {registered_domain(d) for o in active_lic for d in o.get("domains") or []}
             if qd and qd in lic_domains:
                 notes.append(f"{where} warns about '{w['name']}'"
                              + (" (clone)" if r_is_clone else " (impersonation of a licensed name is common)")
@@ -418,11 +496,52 @@ def check_entity(req: dict, ix: Index, *, today: str | None = None, unavailable:
             covered = bool(covered_srcs) and (not c or c in EEA)
         else:
             covered_srcs, covered, test = [], False, None
-        found = [o for o in strong_lic if covered and o["source"] in covered_srcs and test({"src": o["source"], "type": o.get("type"), "services": o.get("services") or []})
+        found_all = [o for o in strong_lic if covered and o["source"] in covered_srcs and test({"src": o["source"], "type": o.get("type"), "services": o.get("services") or []})
                  and (not c or o.get("home_state") == c or c in (o.get("passported_to") or []))]
+        found, sib = found_all, SIBLING_CLAIMS.get(t)
+        matched_as, strict_lapsed = None, []
+        if sib and found_all:
+            active_strict = [o for o in found_all if sib["strict"](o) and eff(o) == "active"]
+            if active_strict:
+                found = active_strict  # an active strict-type entry exists: trust it (pre-widening policy),
+                                       # ignore sibling-type entries entirely (a withdrawn strict entry does not
+                                       # borrow an active sibling's activeness, or vice versa)
+            else:
+                active_sibling = [o for o in found_all if not sib["strict"](o) and eff(o) == "active"]
+                strict_lapsed = [o for o in found_all if sib["strict"](o)]  # all inactive here (0.1.26)
+                if active_sibling:
+                    found = active_sibling
+                    matched_as = sorted({o["type"] for o in active_sibling if o.get("type")})
+                elif not strict_lapsed:
+                    # nothing active, and found_all is all sibling-type (no strict entry at all, e.g. a withdrawn
+                    # AIFM on an investment_firm claim, a withdrawn EMI on a payment_institution claim): still say
+                    # what was found instead of reading as not-found (0.1.26).
+                    matched_as = sorted({o["type"] for o in found_all if o.get("type")})
+                # else: nothing active, and found_all includes an inactive strict entry -- keep found = found_all;
+                # the ordinary "found but not active" / "licence withdrawn" reasoning below covers it.
         claim_out = {"claimed": claim["text"], "type": t, "country": c, "covered": covered,
                      "found": bool(found) if covered else None,
                      "found_active": any(eff(o) == "active" for o in found) if covered else None}
+        sibling_stays_allow = False
+        if matched_as:
+            claim_out["matched_as"] = matched_as
+            claim_out["note"] = sib["note"]
+            raw_text = claim["text"] if isinstance(claim["text"], str) else ""
+            folded = fold(raw_text).replace("_", " ")
+            sibling_stays_allow = bool(sib["soft_words"] and re.search(sib["soft_words"], folded)
+                                       and not (sib["hard_words"] and re.search(sib["hard_words"], folded))
+                                       and not strict_lapsed)
+            if not sibling_stays_allow:
+                worse("REVIEW")
+                if strict_lapsed:
+                    o = strict_lapsed[0]
+                    label = sib["label"][2:] if sib["label"].startswith("a ") else sib["label"]
+                    reasons.append(f"Claimed licence '{claim['text']}': its {label} entry is {eff(o)}"
+                                   + (f", withdrawn {o['withdrawn_on']}" if o.get("withdrawn_on") else "")
+                                   + f"; active only as {', '.join(matched_as)}")
+                else:
+                    reasons.append(f"Claimed licence '{claim['text']}' found only as {', '.join(matched_as)}, not as "
+                                   f"{sib['label']}")
         if not covered:
             worse("REVIEW")
             claim_out["note"] = ("not_covered: this licence type/country is not in our registers "
@@ -461,10 +580,22 @@ def check_entity(req: dict, ix: Index, *, today: str | None = None, unavailable:
             reasons.append(f"domain_unconfirmed: the register lists no website for this firm, so {q['domain']} "
                            "cannot be confirmed as theirs (impersonators reuse real names); verify the domain "
                            "another way, or leave domain out to check licence status only")
+    if any(o.get("lei") for o in lic):  # each matched register entry: its own LEI's status
+        for o in lic:
+            if o.get("lei"):
+                o.update(LEI.licence_fields(lei_snap, o["lei"]))
     reg_lei = next((o["lei"] for o in active_lic + strong_lic if o.get("lei")), None)
     lei_sec = LEI.section(snap=lei_snap, q=q, register_lei=reg_lei, gleif_info=gleif_info,
                           live=(lambda x: gleif(x)) if gleif and not q["lei"] else None, today=today)
-    lei_reasons, lei_notes = LEI.verdict_effects(lei_sec, claims_licence=bool(claim))
+    sec_lei = (lei_sec or {}).get("lei")
+    # the LEI belongs to an authorised firm we matched (register entry's own LEI, the LEI registered with your KVK
+    # number, or your LEI found the entry): its status matters even without a claimed_licence
+    on_licensed = bool(sec_lei and active_lic) and (
+        lei_sec.get("lei_from") in ("register", "kvk")
+        or any(o.get("lei") == sec_lei or o["match"]["method"] in ("lei", "parent_lei") for o in active_lic))
+    lei_reasons, lei_notes = LEI.verdict_effects(lei_sec, claims_licence=bool(claim) or on_licensed)
+    lei_reasons += LEI.licence_reasons(active_lic, sec_lei, shown=lic[:MAX_HITS], queried=q["lei"])
+    lei_notes += LEI.licence_notes(lic[:MAX_HITS], sec_lei)
     by_lei = [o for o in lic if o["match"]["method"] in ("lei", "parent_lei")]
     mm = LEI.name_mismatch(lei_sec, q["name"], [*((gleif_info or {}).get("other_names") or []),
                                                *(o["name"] for o in by_lei),
@@ -509,7 +640,7 @@ def check_entity(req: dict, ix: Index, *, today: str | None = None, unavailable:
                        + (f" since {a['authorised_since']}" if a.get("authorised_since") else ""))
     status = ("sanctioned" if any(s["match"]["confidence"] >= STRONG for s in sanc) else
               "warned" if warn_block and not active_lic else
-              "licensed_and_warned" if warn_block and active_lic else
+              "licensed_and_warned" if (warn_block or warn_on_licensed) and active_lic else
               "registered_offer" if active_lic and all(o["source"] == "amf_biens_divers" for o in active_lic) else
               "licensed" if active_lic else
               "licence_withdrawn" if strong_lic else
